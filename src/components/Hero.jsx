@@ -28,7 +28,7 @@ export default function Hero() {
           transition={{ duration: 0.8 }}
           className="backdrop-blur-md bg-white/5 border border-white/10 px-8 py-3 rounded-full flex items-center justify-between w-[90%] max-w-5xl"
         >
-          <h1 className="text-lg font-semibold tracking-wide">ASWIN</h1>
+          <h1 className="text-lg font-semibold tracking-wide">ASWIN S</h1>
 
           <div className="hidden md:flex gap-6 text-sm text-gray-300">
             <a href="#about" className="hover:text-white transition">About</a>
