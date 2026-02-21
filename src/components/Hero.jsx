@@ -66,7 +66,7 @@ export default function Hero() {
         >
           Hi, I'm{" "}
           <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            Aswin Stark
+            ASWIN
           </span>
         </motion.h2>
 
