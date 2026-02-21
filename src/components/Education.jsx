@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { GraduationCap, BookOpen } from "lucide-react";
 
@@ -18,22 +18,75 @@ export default function Education() {
       duration: "2019 – 2022",
       university: "University",
       description:
-        "Foundation in computer science, programming fundamentals, data structures, algorithms, and web development technologies.",
+        "Foundation in computer science, programming fundamentals, and web development technologies.",
       icon: <BookOpen size={28} />,
       gradient: "from-blue-600/20 to-cyan-600/20",
     },
   ];
 
-  return (
-    <section className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#140a34] to-[#090e2a] text-white px-6 py-24 relative overflow-hidden">
+  // ===== Neon Stars Background =====
+  const [stars, setStars] = useState([]);
+  const mouse = useRef({ x: 0, y: 0 });
 
-      {/* Background Glow */}
-      <div className="absolute -left-40 top-1/3 w-[400px] h-[400px] bg-purple-600 opacity-20 blur-[120px] rounded-full"></div>
-      <div className="absolute -right-40 bottom-0 w-[400px] h-[400px] bg-blue-600 opacity-20 blur-[120px] rounded-full"></div>
+  useEffect(() => {
+    const starArray = Array.from({ length: 100 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 2 + 1,
+      speed: Math.random() * 0.5 + 0.1,
+      color: `hsl(${Math.random() * 360}, 80%, 70%)`,
+      depth: Math.random() * 0.5 + 0.2,
+    }));
+    setStars(starArray);
+
+    const interval = setInterval(() => {
+      setStars(prev =>
+        prev.map(s => {
+          let newX = s.x + s.speed * 2;
+          let newY = s.y + s.speed * 1.2;
+          if (newX > window.innerWidth) newX = 0;
+          if (newY > window.innerHeight) newY = 0;
+          return { ...s, x: newX, y: newY };
+        })
+      );
+    }, 16);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = e => {
+      mouse.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  return (
+    <section className="min-h-screen relative bg-gradient-to-br from-[#0f0c29] via-[#140a34] to-[#090e2a] text-white px-6 py-24 overflow-hidden">
+      {/* Neon Stars */}
+      {stars.map((star, idx) => {
+        const offsetX = (mouse.current.x - window.innerWidth / 2) * star.depth * 0.02;
+        const offsetY = (mouse.current.y - window.innerHeight / 2) * star.depth * 0.02;
+        return (
+          <div
+            key={idx}
+            style={{
+              width: star.size,
+              height: star.size,
+              top: star.y + offsetY,
+              left: star.x + offsetX,
+              backgroundColor: star.color,
+              boxShadow: `0 0 8px ${star.color}, 0 0 16px ${star.color}`,
+            }}
+            className="absolute rounded-full opacity-70 animate-pulse"
+          />
+        );
+      })}
 
       {/* Section Header */}
-      <div className="text-center mb-20">
-        <span className="px-4 py-1 text-sm bg-white/10 border border-white/10 rounded-full">
+      <div className="text-center mb-20 relative z-10">
+        <span className="px-4 py-1 text-sm bg-white/10 border border-white/10 rounded-full animate-pulse">
           Education
         </span>
 
@@ -50,41 +103,55 @@ export default function Education() {
       </div>
 
       {/* Education Cards */}
-      <div className="max-w-4xl mx-auto flex flex-col gap-10">
+      <div className="max-w-5xl mx-auto flex flex-col gap-12 relative z-10">
         {educationData.map((edu, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, y: 80 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: index * 0.2 }}
-            whileHover={{ scale: 1.03 }}
+            initial={{ opacity: 0, y: 100, scale: 0.85, rotate: -2 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+            transition={{
+              duration: 0.8,
+              delay: index * 0.2,
+              type: "spring",
+              stiffness: 120,
+              damping: 15,
+            }}
             viewport={{ once: true }}
-            className={`relative bg-gradient-to-r ${edu.gradient} border border-white/10 backdrop-blur-xl rounded-2xl p-8 shadow-2xl`}
+            whileHover={{ scale: 1.05, rotate: 1, transition: { type: "spring", stiffness: 180 } }}
+            className={`relative bg-gradient-to-r ${edu.gradient} border border-white/20 backdrop-blur-2xl rounded-[2.5rem] p-10 shadow-2xl overflow-hidden group cursor-pointer`}
           >
-            <div className="flex items-start gap-6">
+            {/* Neon Sparkles on Hover */}
+            <div className="absolute inset-0 pointer-events-none">
+              <motion.div
+                className="w-2 h-2 rounded-full bg-purple-400 blur-xl opacity-0"
+                animate={{ opacity: [0, 1, 0], x: [0, 40, -40], y: [0, -40, 40] }}
+                transition={{ repeat: Infinity, duration: 2, delay: index * 0.5 }}
+              />
+              <motion.div
+                className="w-2 h-2 rounded-full bg-blue-400 blur-xl opacity-0"
+                animate={{ opacity: [0, 1, 0], x: [-40, 40, 0], y: [40, -40, 0] }}
+                transition={{ repeat: Infinity, duration: 2.5, delay: index * 0.7 }}
+              />
+            </div>
 
+            <div className="flex items-start gap-6">
               {/* Icon */}
-              <div className="p-4 bg-white/10 rounded-xl text-purple-400">
+              <div className="p-5 bg-white/10 rounded-3xl text-purple-400 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.9)] transition-all">
                 {edu.icon}
               </div>
 
               {/* Content */}
               <div className="flex-1">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                  <h3 className="text-xl font-semibold">{edu.title}</h3>
-
-                  <span className="px-4 py-1 text-sm bg-white/10 border border-white/10 rounded-full">
+                  <h3 className="text-2xl font-bold">{edu.title}</h3>
+                  <span className="px-5 py-2 text-sm bg-white/10 border border-white/20 rounded-full">
                     {edu.duration}
                   </span>
                 </div>
 
-                <p className="text-purple-300 mt-2 font-medium">
-                  {edu.university}
-                </p>
+                <p className="text-purple-300 mt-3 font-medium text-lg">{edu.university}</p>
 
-                <p className="text-gray-300 mt-4 leading-relaxed">
-                  {edu.description}
-                </p>
+                <p className="text-gray-300 mt-4 leading-relaxed text-lg">{edu.description}</p>
               </div>
             </div>
           </motion.div>

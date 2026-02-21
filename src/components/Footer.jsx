@@ -57,7 +57,7 @@ const Footer = () => {
         
         {/* Left */}
         <p className="text-sm">
-          © {year} Aswin Stark. All rights reserved.
+          © {year} Aswin S. All rights reserved.
         </p>
 
         {/* Center Icons with Glow */}
@@ -110,7 +110,7 @@ const Footer = () => {
           >
             <FiHeart />
           </motion.span>
-          using React & Python
+          creative way.
         </p>
       </div>
 
