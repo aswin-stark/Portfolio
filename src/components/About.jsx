@@ -49,7 +49,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="min-h-screen relative bg-gradient-to-br from-[#0f0c29] via-[#1a093e] to-[#090e2a] text-white px-10 py-32 overflow-hidden font-poppins"
+      className="min-h-screen relative text-white px-10 py-32 overflow-hidden font-poppins"
     >
       {/* Neon Cursor */}
       <motion.div
@@ -58,7 +58,7 @@ export default function About() {
       />
 
       {/* Diagonal Neon Stars */}
-      {stars.map((star, idx) => (
+      {/* {stars.map((star, idx) => (
         <div
           key={idx}
           style={{
@@ -71,7 +71,7 @@ export default function About() {
           }}
           className="absolute rounded-full opacity-70 animate-pulse"
         />
-      ))}
+      ))} */}
 
       {/* Title */}
       <div className="text-center mb-20 relative z-10">

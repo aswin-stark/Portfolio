@@ -158,7 +158,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#0f0c29] via-[#1a093e] to-[#090e2a] text-white relative overflow-hidden">
+    <div className="min-h-screen w-full  text-white relative ">
       {/* Neon Cursor */}
       <motion.div
         style={{ x: springX, y: springY }}
@@ -166,7 +166,7 @@ export default function Hero() {
       />
 
       {/* Diagonal Neon Stars */}
-      {stars.map((star, idx) => (
+      {/* {stars.map((star, idx) => (
         <div
           key={idx}
           style={{
@@ -179,7 +179,7 @@ export default function Hero() {
           }}
           className="absolute rounded-full opacity-70"
         />
-      ))}
+      ))} */}
 
       {/* Navbar */}
       <nav className="w-full flex justify-center pt-6 relative z-10">

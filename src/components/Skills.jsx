@@ -108,7 +108,8 @@ export default function Skills() {
   ];
 
   return (
-    <section className="min-h-screen relative bg-gradient-to-br from-[#0f0c29] via-[#140a34] to-[#090e2a] text-white px-6 py-24 overflow-hidden">
+    <section className="min-h-screen relative  text-white px-6 py-24 overflow-hidden">
+     
       {/* ====================== NEON STARS ====================== */}
       {stars.map((star, idx) => (
         <div

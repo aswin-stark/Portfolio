@@ -63,7 +63,7 @@ export default function Education() {
   }, []);
 
   return (
-    <section className="min-h-screen relative bg-gradient-to-br from-[#0f0c29] via-[#140a34] to-[#090e2a] text-white px-6 py-24 overflow-hidden">
+    <section className="min-h-screen relative  text-white px-6 py-24 overflow-hidden">
       {/* Neon Stars */}
       {stars.map((star, idx) => {
         const offsetX = (mouse.current.x - window.innerWidth / 2) * star.depth * 0.02;

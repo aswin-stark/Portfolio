@@ -83,7 +83,7 @@ const handleSendMessage = (e) => {
 };
 
   return (
-    <section className="min-h-screen relative bg-gradient-to-br from-[#0b0b1f] via-[#140a34] to-[#070714] text-white px-6 py-20 overflow-hidden">
+    <section className="min-h-screen relative  text-white px-6 py-20 overflow-hidden">
       
       {/* Neon Stars */}
       {stars.map((star, idx) => {
