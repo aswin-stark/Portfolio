@@ -108,7 +108,7 @@ export default function Skills() {
   ];
 
   return (
-    <section className="min-h-screen relative  text-white px-6 py-24 overflow-hidden">
+    <section id="skills" className="min-h-screen relative  text-white px-6 py-24 overflow-hidden">
      
       {/* ====================== NEON STARS ====================== */}
       {stars.map((star, idx) => (

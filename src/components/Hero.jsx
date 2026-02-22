@@ -182,7 +182,7 @@ export default function Hero() {
       ))} */}
 
       {/* Navbar */}
-      <nav className="w-full flex justify-center pt-6 relative z-10">
+      {/* <nav className="w-full flex justify-center pt-6 relative z-10 sticky">
         <motion.div
           initial={{ y: -40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -212,7 +212,7 @@ export default function Hero() {
             Hire Me
           </button>
         </motion.div>
-      </nav>
+      </nav> */}
 
       {/* Hero Content */}
       <div className="flex flex-col items-center justify-center text-center px-6 mt-24 relative z-10">

@@ -1,22 +1,29 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { FiMail, FiGithub, FiLinkedin, FiPhone, FiMapPin, FiSend } from "react-icons/fi";
+import {
+  FiMail,
+  FiGithub,
+  FiLinkedin,
+  FiPhone,
+  FiMapPin,
+  FiSend,
+} from "react-icons/fi";
 import emailjs from "@emailjs/browser";
 
 export default function Contact() {
   const [stars, setStars] = useState([]);
-  const [statusMessage, setStatusMessage] = useState(""); // ✅ success/error message
-  const [statusColor, setStatusColor] = useState(""); // ✅ color for message
+  const [statusMessage, setStatusMessage] = useState("");
+  const [statusColor, setStatusColor] = useState("");
   const mouse = useRef({ x: 0, y: 0 });
   const formRef = useRef(null);
 
   // ===== Neon Stars Background =====
   useEffect(() => {
-    const starArray = Array.from({ length: 120 }, () => ({
+    const starArray = Array.from({ length: 100 }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
-      size: Math.random() * 2 + 1,
-      speed: Math.random() * 0.5 + 0.1,
+      size: Math.random() * 2 + 0.5,
+      speed: Math.random() * 0.4 + 0.1,
       color: `hsl(${Math.random() * 360}, 80%, 70%)`,
       depth: Math.random() * 0.5 + 0.2,
     }));
@@ -25,8 +32,8 @@ export default function Contact() {
     const interval = setInterval(() => {
       setStars((prev) =>
         prev.map((s) => {
-          let newX = s.x + s.speed * 2;
-          let newY = s.y + s.speed * 1.2;
+          let newX = s.x + s.speed * 1.5;
+          let newY = s.y + s.speed;
           if (newX > window.innerWidth) newX = 0;
           if (newY > window.innerHeight) newY = 0;
           return { ...s, x: newX, y: newY };
@@ -45,50 +52,45 @@ export default function Contact() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // ===== Handle Send Message =====
-const handleSendMessage = (e) => {
-  e.preventDefault();
-  setStatusMessage(""); // clear previous message
+  // ===== Send Message =====
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    setStatusMessage("");
 
-  emailjs
-    .sendForm(
-      "service_uoxrd3o",      // Your EmailJS Service ID
-      "template_3t1widc",     // Your EmailJS Template ID
-      formRef.current,
-      "_vcukmTXsEj1iYsyj"    // Your EmailJS Public Key
-    )
-    .then(
-      (result) => {
-        setStatusMessage("✅ Message sent successfully! I will reach you soon. Thank you for your patience.");
-        setStatusColor("text-green-400");
-        formRef.current.reset();
+    emailjs
+      .sendForm(
+        "service_uoxrd3o",
+        "template_3t1widc",
+        formRef.current,
+        "_vcukmTXsEj1iYsyj"
+      )
+      .then(
+        () => {
+          setStatusMessage(
+            "✅ Message sent successfully! I will reach you soon."
+          );
+          setStatusColor("text-green-400");
+          formRef.current.reset();
 
-        // ✅ Hide the message after 5 seconds
-        setTimeout(() => {
-          setStatusMessage("");
-        }, 5000);
-      },
-      (error) => {
-        setStatusMessage("❌ Failed to send message. Please try again.");
-        setStatusColor("text-red-400");
-
-        // Optional: Hide error after 5 seconds
-        setTimeout(() => {
-          setStatusMessage("");
-        }, 5000);
-
-        console.error(error.text);
-      }
-    );
-};
+          setTimeout(() => setStatusMessage(""), 5000);
+        },
+        () => {
+          setStatusMessage("❌ Failed to send message. Please try again.");
+          setStatusColor("text-red-400");
+          setTimeout(() => setStatusMessage(""), 5000);
+        }
+      );
+  };
 
   return (
-    <section className="min-h-screen relative  text-white px-6 py-20 overflow-hidden">
-      
+    <section id="contact" className="min-h-screen relative text-white px-6 py-16 overflow-hidden">
       {/* Neon Stars */}
       {stars.map((star, idx) => {
-        const offsetX = (mouse.current.x - window.innerWidth / 2) * star.depth * 0.02;
-        const offsetY = (mouse.current.y - window.innerHeight / 2) * star.depth * 0.02;
+        const offsetX =
+          (mouse.current.x - window.innerWidth / 2) * star.depth * 0.02;
+        const offsetY =
+          (mouse.current.y - window.innerHeight / 2) * star.depth * 0.02;
+
         return (
           <div
             key={idx}
@@ -98,7 +100,7 @@ const handleSendMessage = (e) => {
               top: star.y + offsetY,
               left: star.x + offsetX,
               backgroundColor: star.color,
-              boxShadow: `0 0 8px ${star.color}, 0 0 16px ${star.color}`,
+              boxShadow: `0 0 6px ${star.color}, 0 0 12px ${star.color}`,
             }}
             className="absolute rounded-full opacity-70 animate-pulse"
           />
@@ -107,156 +109,188 @@ const handleSendMessage = (e) => {
 
       {/* Heading */}
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
+        initial={{ opacity: 0, y: -40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.7 }}
         viewport={{ once: true }}
-        className="text-center mb-16 relative z-10"
+        className="text-center mb-14 relative z-10"
       >
-        <span className="px-4 py-1 bg-[#1c1c3a] text-sm rounded-full text-purple-400 animate-pulse">
+        <span className="px-4 py-1 bg-[#1c1c3a] text-xs rounded-full text-purple-400 animate-pulse">
           Contact
         </span>
-        <h2 className="text-4xl md:text-5xl font-bold mt-4">
+        <h2 className="text-3xl md:text-4xl font-bold mt-3">
           Let's <span className="text-purple-500">Connect</span>
         </h2>
-        <p className="text-gray-400 mt-4">
-          Interested in collaboration or just want to say hi? Reach out below!
+        <p className="text-gray-400 mt-3 text-sm">
+          Interested in collaboration or just want to say hi?
         </p>
       </motion.div>
 
-      {/* 3 Columns */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
-
-        {/* ===== Connect With Me ===== */}
+      {/* Grid */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+        {/* Connect */}
         <motion.div
-          initial={{ opacity: 0, x: -80 }}
+          initial={{ opacity: 0, x: -60 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-2xl font-semibold mb-6">Connect With Me</h3>
-          <p className="text-gray-400 mb-8">
-            Find me on these platforms and let's network.
+          <h3 className="text-xl font-semibold mb-5">Connect With Me</h3>
+          <p className="text-gray-400 mb-6 text-sm">
+            Find me on these platforms.
           </p>
-          <div className="flex flex-col gap-6">
-            {[ 
-              { icon: <FiGithub />, label: "GitHub", value: "github.com/aswin-stark", color: "bg-blue-600", href: "https://github.com/aswin-stark" },
-              { icon: <FiLinkedin />, label: "LinkedIn", value: "linkedin.com/in/aswin-stark", color: "bg-blue-500", href: "https://www.linkedin.com/in/aswin-s-b74136210/" }
+
+          <div className="flex flex-col gap-5">
+            {[
+              {
+                icon: <FiGithub />,
+                label: "GitHub",
+                value: "github.com/aswin-stark",
+                color: "bg-blue-600",
+                href: "https://github.com/aswin-stark",
+              },
+              {
+                icon: <FiLinkedin />,
+                label: "LinkedIn",
+                value: "linkedin.com/in/aswin-stark",
+                color: "bg-blue-500",
+                href: "https://www.linkedin.com/in/aswin-s-b74136210/",
+              },
             ].map((social, idx) => (
               <motion.a
                 key={idx}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.05, boxShadow: `0 0 15px ${social.color}, 0 0 30px ${social.color}` }}
-                className="relative bg-[#151530] p-6 rounded-[2rem] flex items-center gap-4 cursor-pointer overflow-hidden shadow-2xl transition"
+                whileHover={{ scale: 1.04 }}
+                className="bg-[#151530] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl"
               >
-                <div className={`${social.color} p-4 rounded-2xl flex items-center justify-center`}>
+                <div
+                  className={`${social.color} p-3 rounded-xl flex items-center justify-center`}
+                >
                   {social.icon}
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm">{social.label}</p>
-                  <p className="text-white font-semibold">{social.value}</p>
+                  <p className="text-gray-400 text-xs">{social.label}</p>
+                  <p className="text-white text-sm font-semibold">
+                    {social.value}
+                  </p>
                 </div>
               </motion.a>
             ))}
           </div>
         </motion.div>
+ {/* Form */}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+        >
+          <h3 className="text-xl font-semibold mb-5">Send a Message</h3>
 
-        {/* ===== Contact Me ===== */}
+          <div className="bg-[#151530] p-6 rounded-[1.75rem] shadow-xl">
+            <form
+              ref={formRef}
+              onSubmit={handleSendMessage}
+              className="space-y-4"
+            >
+              {[
+                { name: "user_name", placeholder: "Your Name" },
+                { name: "user_phone", placeholder: "Phone Number" },
+                { name: "email", placeholder: "Your Email", type: "email" },
+              ].map((field, i) => (
+                <input
+                  key={i}
+                  type={field.type || "text"}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  className="bg-[#1f1f3f] p-3 rounded-lg w-full text-sm outline-none focus:ring-2 focus:ring-purple-600"
+                />
+              ))}
+
+              <textarea
+                name="message"
+                rows="4"
+                placeholder="Your Message"
+                className="bg-[#1f1f3f] p-3 rounded-lg w-full text-sm outline-none focus:ring-2 focus:ring-purple-600"
+              />
+
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 py-3 rounded-xl font-semibold flex justify-center items-center gap-2 shadow-lg"
+              >
+                <FiSend /> Send Message
+              </motion.button>
+
+              {statusMessage && (
+                <p className={`text-center text-sm mt-3 ${statusColor}`}>
+                  {statusMessage}
+                </p>
+              )}
+            </form>
+
+            <p className="mt-6 italic text-gray-400 text-center text-sm">
+              "Work hard in silence, let your success make the noise."
+            </p>
+          </div>
+        </motion.div>
+        {/* Contact Info */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="flex flex-col gap-6"
         >
-          <h3 className="text-2xl font-semibold mb-6">Contact Me</h3>
-          <p className="text-gray-400 mb-8">
-            Reach me via email, phone, or visit my location.
+          <h3 className="text-xl font-semibold mb-5">Contact Me</h3>
+          <p className="text-gray-400 mb-6 text-sm">
+            Reach me directly.
           </p>
-          <div className="flex flex-col gap-6">
+
+          <div className="flex flex-col gap-5">
             {[
-              { icon: <FiMail />, label: "Email", value: "ajayaswin521@gmail.com", color: "bg-purple-600" },
-              { icon: <FiPhone />, label: "Phone", value: "+91 8144721458", color: "bg-green-500" },
-              { icon: <FiMapPin />, label: "Address", value: "Chennai, Tamil Nadu, India", color: "bg-pink-500" }
+              {
+                icon: <FiMail />,
+                label: "Email",
+                value: "ajayaswin521@gmail.com",
+                color: "bg-purple-600",
+              },
+              {
+                icon: <FiPhone />,
+                label: "Phone",
+                value: "+91 8144721458",
+                color: "bg-green-500",
+              },
+              {
+                icon: <FiMapPin />,
+                label: "Address",
+                value: "Chennai, India",
+                color: "bg-pink-500",
+              },
             ].map((info, idx) => (
               <motion.div
                 key={idx}
-                whileHover={{ scale: 1.05 }}
-                className="relative bg-[#1f1f3f] p-6 rounded-[2rem] flex items-center gap-4 cursor-default overflow-hidden shadow-2xl"
+                whileHover={{ scale: 1.04 }}
+                className="bg-[#1f1f3f] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl"
               >
-                <div className={`${info.color} p-4 rounded-2xl flex items-center justify-center`}>
+                <div
+                  className={`${info.color} p-3 rounded-xl flex items-center justify-center`}
+                >
                   {info.icon}
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm">{info.label}</p>
-                  <p className="text-white font-semibold">{info.value}</p>
+                  <p className="text-gray-400 text-xs">{info.label}</p>
+                  <p className="text-white text-sm font-semibold">
+                    {info.value}
+                  </p>
                 </div>
               </motion.div>
             ))}
           </div>
         </motion.div>
 
-        {/* ===== Send Message Form + Status ===== */}
-        <motion.div
-          initial={{ opacity: 0, x: 80 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="relative flex flex-col gap-6"
-        >
-          <h3 className="text-2xl font-semibold mb-6">Send a Message</h3>
-          <motion.div className="relative bg-[#151530] p-8 rounded-[2rem] shadow-2xl overflow-hidden">
-            {/* Neon Sparkles */}
-            <motion.div
-              className="absolute inset-0 pointer-events-none"
-              animate={{ rotate: [0, 360] }}
-              transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-            >
-              {[...Array(20)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute w-1 h-1 bg-purple-400 blur-lg rounded-full opacity-30"
-                  style={{
-                    top: `${Math.random() * 100}%`,
-                    left: `${Math.random() * 100}%`,
-                  }}
-                ></div>
-              ))}
-            </motion.div>
-
-            <form ref={formRef} onSubmit={handleSendMessage} className="relative space-y-6 z-10">
-              <input type="text" name="user_name" placeholder="Your Name" className="bg-[#1f1f3f] p-4 rounded-xl w-full outline-none focus:ring-2 focus:ring-purple-600" />
-              <input type="text" name="user_country" placeholder="Your Country" className="bg-[#1f1f3f] p-4 rounded-xl w-full outline-none focus:ring-2 focus:ring-purple-600" />
-              <input type="text" name="user_phone" placeholder="Your Phone Number" className="bg-[#1f1f3f] p-4 rounded-xl w-full outline-none focus:ring-2 focus:ring-purple-600" />
-              <input type="email" name="email" placeholder="Your Email" className="bg-[#1f1f3f] p-4 rounded-xl w-full outline-none focus:ring-2 focus:ring-purple-600" />
-              <textarea name="message" rows="5" placeholder="Your Message" className="bg-[#1f1f3f] p-4 rounded-xl w-full outline-none focus:ring-2 focus:ring-purple-600"></textarea>
-              
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 py-4 rounded-2xl font-semibold flex justify-center items-center gap-2 shadow-lg">
-                <FiSend /> Send Message
-              </motion.button>
-
-              {/* ✅ Inline status message */}
-              {statusMessage && (
-                <p className={`mt-4 text-center font-medium ${statusColor}`}>
-                  {statusMessage}
-                </p>
-              )}
-            </form>
-
-            {/* Work-Life Quote */}
-            <motion.p className="mt-8 italic text-gray-400 text-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              viewport={{ once: true }}
-            >
-              "Work hard in silence, let your success make the noise."
-            </motion.p>
-          </motion.div>
-        </motion.div>
-
+       
       </div>
     </section>
   );

@@ -5,8 +5,9 @@ import Education from "./components/Education.jsx";
 import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
 import NeonBackground from "./components/NeonBackground.jsx";
+import Header from "./components/Header.jsx";
 function App() {
-  return<><Hero /><About /><Skills /> <Education /> <Contact /> <Footer /> <NeonBackground /> </> ;
+  return<> <Header /> <Hero /><About /><Skills /> <Education /> <Contact /> <Footer /> <NeonBackground /> </> ;
 }
 
 export default App;
