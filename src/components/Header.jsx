@@ -19,7 +19,7 @@ export default function Header() {
           w-[92%] max-w-7xl shadow-2xl"
         >
           {/* Logo */}
-          <a href="/"> <h1 className="text-lg font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
+          <a href="/Portfolio/"> <h1 className="text-lg font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
             ASWIN
           </h1></a>
 

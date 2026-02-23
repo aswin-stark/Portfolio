@@ -43,7 +43,7 @@ function MagneticCard({ icon, label, glow, onClick, href, download }) {
       whileHover={{ scale: 1.1 }}
       className="relative group cursor-pointer w-full max-w-[120px]"
     >
-      <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 opacity-60 blur-lg animate-tilt" />
+      <div   className="absolute -inset-0.5 rounded-3xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 opacity-60 blur-lg animate-tilt" />
       <div
         className={`absolute inset-0 rounded-3xl blur-2xl opacity-50 bg-gradient-to-r ${glow}`}
       />
@@ -140,7 +140,7 @@ export default function Hero() {
   }, [cursorX, cursorY]);
 
   return (
-    <div className="w-full min-h-screen text-white relative overflow-visible">
+    <div  className="w-full min-h-screen text-white relative overflow-visible">
       {/* Background */}
       <NeonBackground />
 
@@ -151,7 +151,7 @@ export default function Hero() {
       />
 
       {/* Hero Content */}
-      <div className="flex flex-col items-center justify-start text-center px-6 pt-8 relative z-10">
+      <div  className="flex flex-col items-center justify-start text-center px-6 pt-8 relative z-10">
         <span className="px-4 py-2 text-sm bg-white/10 rounded-full border border-white/10 mb-4 inline-block">
           ⚡ Available for opportunities
         </span>
