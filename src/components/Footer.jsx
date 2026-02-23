@@ -76,7 +76,7 @@ const Footer = () => {
           </motion.a>
 
           <motion.a
-            href="https://linkedin.com/in/aswin-stark"
+            href="https://www.linkedin.com/in/aswin-s-b74136210/"
             target="_blank"
             whileHover={{
               scale: 1.3,

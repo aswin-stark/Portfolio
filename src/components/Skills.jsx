@@ -128,6 +128,7 @@ export default function Skills() {
 
       {/* ====================== HEADER ====================== */}
       <div className="text-center mb-20 relative z-10">
+      
         <span className="px-4 py-1 text-sm bg-white/10 border border-white/10 rounded-full animate-pulse">
           Technical Skills
         </span>

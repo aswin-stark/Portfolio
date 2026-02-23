@@ -71,7 +71,6 @@ export default function Contact() {
           );
           setStatusColor("text-green-400");
           formRef.current.reset();
-
           setTimeout(() => setStatusMessage(""), 5000);
         },
         () => {
@@ -83,7 +82,11 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="min-h-screen relative text-white px-6 py-16 overflow-hidden">
+    <section
+      id="contact"
+      className="min-h-screen relative text-white px-6 py-16 overflow-hidden"
+      style={{ scrollMarginTop: "50px" }} // fixed header offset
+    >
       {/* Neon Stars */}
       {stars.map((star, idx) => {
         const offsetX =
@@ -115,10 +118,10 @@ export default function Contact() {
         viewport={{ once: true }}
         className="text-center mb-14 relative z-10"
       >
-        <span className="px-4 py-1 bg-[#1c1c3a] text-xs rounded-full text-purple-400 animate-pulse">
+        <span className="px-4 py-1 bg-[#1c1c3a] text-2xl rounded-full text-purple-400 animate-pulse">
           Contact
         </span>
-        <h2 className="text-3xl md:text-4xl font-bold mt-3">
+        <h2 className="text-3xl md:text-5xl font-bold mt-8">
           Let's <span className="text-purple-500">Connect</span>
         </h2>
         <p className="text-gray-400 mt-3 text-sm">
@@ -136,23 +139,19 @@ export default function Contact() {
           viewport={{ once: true }}
         >
           <h3 className="text-xl font-semibold mb-5">Connect With Me</h3>
-          <p className="text-gray-400 mb-6 text-sm">
-            Find me on these platforms.
-          </p>
+          <p className="text-gray-400 mb-6 text-sm">Find me on these platforms.</p>
 
           <div className="flex flex-col gap-5">
             {[
               {
                 icon: <FiGithub />,
                 label: "GitHub",
-                value: "github.com/aswin-stark",
                 color: "bg-blue-600",
                 href: "https://github.com/aswin-stark",
               },
               {
                 icon: <FiLinkedin />,
                 label: "LinkedIn",
-                value: "linkedin.com/in/aswin-stark",
                 color: "bg-blue-500",
                 href: "https://www.linkedin.com/in/aswin-s-b74136210/",
               },
@@ -171,16 +170,14 @@ export default function Contact() {
                   {social.icon}
                 </div>
                 <div>
-                  <p className="text-gray-400 text-xs">{social.label}</p>
-                  <p className="text-white text-sm font-semibold">
-                    {social.value}
-                  </p>
+                  <p className="text-white text-2xl">{social.label}</p>
                 </div>
               </motion.a>
             ))}
           </div>
         </motion.div>
- {/* Form */}
+
+        {/* Form */}
         <motion.div
           initial={{ opacity: 0, x: 60 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -188,13 +185,8 @@ export default function Contact() {
           viewport={{ once: true }}
         >
           <h3 className="text-xl font-semibold mb-5">Send a Message</h3>
-
           <div className="bg-[#151530] p-6 rounded-[1.75rem] shadow-xl">
-            <form
-              ref={formRef}
-              onSubmit={handleSendMessage}
-              className="space-y-4"
-            >
+            <form ref={formRef} onSubmit={handleSendMessage} className="space-y-4">
               {[
                 { name: "user_name", placeholder: "Your Name" },
                 { name: "user_phone", placeholder: "Phone Number" },
@@ -236,6 +228,7 @@ export default function Contact() {
             </p>
           </div>
         </motion.div>
+
         {/* Contact Info */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -244,9 +237,7 @@ export default function Contact() {
           viewport={{ once: true }}
         >
           <h3 className="text-xl font-semibold mb-5">Contact Me</h3>
-          <p className="text-gray-400 mb-6 text-sm">
-            Reach me directly.
-          </p>
+          <p className="text-gray-400 mb-6 text-sm">Reach me directly.</p>
 
           <div className="flex flex-col gap-5">
             {[
@@ -255,12 +246,14 @@ export default function Contact() {
                 label: "Email",
                 value: "ajayaswin521@gmail.com",
                 color: "bg-purple-600",
+                href: "mailto:ajayaswin521@gmail.com",
               },
               {
                 icon: <FiPhone />,
                 label: "Phone",
                 value: "+91 8144721458",
                 color: "bg-green-500",
+                href: "tel:+918144721458",
               },
               {
                 icon: <FiMapPin />,
@@ -268,29 +261,46 @@ export default function Contact() {
                 value: "Chennai, India",
                 color: "bg-pink-500",
               },
-            ].map((info, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ scale: 1.04 }}
-                className="bg-[#1f1f3f] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl"
-              >
-                <div
-                  className={`${info.color} p-3 rounded-xl flex items-center justify-center`}
+            ].map((info, idx) =>
+              info.href ? (
+                <motion.a
+                  key={idx}
+                  href={info.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.04 }}
+                  className="bg-[#1f1f3f] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl cursor-pointer"
                 >
-                  {info.icon}
-                </div>
-                <div>
-                  <p className="text-gray-400 text-xs">{info.label}</p>
-                  <p className="text-white text-sm font-semibold">
-                    {info.value}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                  <div
+                    className={`${info.color} p-3 rounded-xl flex items-center justify-center`}
+                  >
+                    {info.icon}
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-xs">{info.label}</p>
+                    <p className="text-white text-sm font-semibold">{info.value}</p>
+                  </div>
+                </motion.a>
+              ) : (
+                <motion.div
+                  key={idx}
+                  whileHover={{ scale: 1.04 }}
+                  className="bg-[#1f1f3f] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl"
+                >
+                  <div
+                    className={`${info.color} p-3 rounded-xl flex items-center justify-center`}
+                  >
+                    {info.icon}
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-xs">{info.label}</p>
+                    <p className="text-white text-sm font-semibold">{info.value}</p>
+                  </div>
+                </motion.div>
+              )
+            )}
           </div>
         </motion.div>
-
-       
       </div>
     </section>
   );
