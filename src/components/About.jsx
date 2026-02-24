@@ -131,7 +131,7 @@ export default function About() {
           </h3>
 
           {[ 
-            "I'm Aswin Stark, a dedicated Python Developer with a Master of Computer Applications (MCA) degree. I specialize in building efficient, scalable, and user-focused software solutions that solve real-world problems.",
+            "I'm Aswin, a dedicated Python Developer with a Master of Computer Applications (MCA) degree. I specialize in building efficient, scalable, and user-focused software solutions that solve real-world problems.",
             "With a strong foundation in programming principles, data structures, and database management, I develop web applications, automation scripts, and backend systems using Python and related technologies.",
             "I'm highly motivated to continuously learn emerging technologies and apply best practices in software development. I'm actively seeking opportunities to contribute my technical expertise and collaborate with dynamic teams.",
           ].map((text, i) => (
