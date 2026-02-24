@@ -1,61 +1,37 @@
-import React, { useState, useRef, useEffect } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
-import {
-  Mail,
-  FileText,
-  Linkedin,
-  Github,
-  MapPin,
-  Clock,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Mail, FileText, Linkedin, Github, MapPin, Clock } from "lucide-react";
 import profilePic from "../assets/profile.png";
 import resume from "../assets/resume.pdf";
 import NeonBackground from "../components/NeonBackground";
 
-/* Magnetic Card Component */
-function MagneticCard({ icon, label, glow, onClick, href, download }) {
-  const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 150, damping: 15 });
-  const springY = useSpring(y, { stiffness: 150, damping: 15 });
-
-  const handleMouseMove = (e) => {
-    const rect = ref.current.getBoundingClientRect();
-    x.set((e.clientX - (rect.left + rect.width / 2)) * 0.15);
-    y.set((e.clientY - (rect.top + rect.height / 2)) * 0.15);
-  };
-
+/* Magnetic Card Component with CSS Hover Glow */
+function MagneticCard({ icon, label, glow, href, download }) {
   return (
-    <motion.a
-      ref={ref}
+    <a
       href={href}
       download={download}
       target={href ? "_blank" : undefined}
       rel="noopener noreferrer"
-      onClick={onClick}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => {
-        x.set(0);
-        y.set(0);
-      }}
-      style={{ x: springX, y: springY }}
-      whileHover={{ scale: 1.1 }}
-      className="relative group cursor-pointer w-full max-w-[120px]"
+      className={`relative cursor-pointer w-full max-w-[120px] group`}
     >
-      <div   className="absolute -inset-0.5 rounded-3xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 opacity-60 blur-lg animate-tilt" />
+      {/* Glow Background */}
       <div
-        className={`absolute inset-0 rounded-3xl blur-2xl opacity-50 bg-gradient-to-r ${glow}`}
+        className={`absolute -inset-0.5 rounded-3xl bg-gradient-to-r ${glow} opacity-60 blur-lg transition-all duration-300 group-hover:opacity-100 group-hover:blur-3xl`}
       />
-      <div className="relative bg-black/50 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col items-center">
+      <div
+        className={`absolute inset-0 rounded-3xl blur-2xl opacity-50 bg-gradient-to-r ${glow} transition-all duration-300 group-hover:opacity-70 group-hover:blur-2xl`}
+      />
+
+      {/* Card Content */}
+      <div className="relative bg-black/50 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col items-center transition-transform duration-300 group-hover:scale-105">
         <div className="mb-3 text-white">{icon}</div>
         <p className="text-xs tracking-widest text-gray-300 text-center">{label}</p>
       </div>
-    </motion.a>
+    </a>
   );
 }
 
-/* Neon Flickering Clock & Location with Pulsing Glow */
+/* Clock & Location Component */
 function ClockLocation() {
   const [time, setTime] = useState(new Date());
 
@@ -66,92 +42,33 @@ function ClockLocation() {
 
   const formattedTime = time.toLocaleTimeString();
   const location = "Chennai, India";
-  const digits = formattedTime.split("");
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 100, damping: 12, delay: 0.5 }}
-      className="mt-8 flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 text-gray-300 font-mono w-full"
-    >
-      {/* Neon Clock with Pulsing Glow */}
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        className="relative flex items-center gap-2 bg-black/50 backdrop-blur-lg border border-white/10 rounded-xl px-4 py-2 shadow-[0_0_40px_rgba(168,85,247,0.7)]"
-      >
+    <div className="mt-8 flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 text-gray-300 font-mono w-full">
+      {/* Clock */}
+      <div className="flex items-center gap-2 bg-black/50 backdrop-blur-lg border border-white/10 rounded-xl px-4 py-2 shadow-[0_0_40px_rgba(168,85,247,0.7)]">
         <Clock size={20} className="text-purple-400 animate-pulse" />
-        <div className="relative flex space-x-0.5">
-          {/* Pulsing glow behind digits */}
-          <div className="absolute inset-0 rounded-xl bg-purple-500 opacity-10 blur-2xl animate-pulse"></div>
-          <div className="flex relative space-x-0.5">
-            {digits.map((d, i) => (
-              <motion.span
-                key={i}
-                animate={{
-                  opacity: [0.7, 1, 0.85, 1],
-                  textShadow: [
-                    "0 0 4px #fff, 0 0 12px #8b5cf6",
-                    "0 0 6px #fff, 0 0 18px #d8b4fe",
-                    "0 0 4px #fff, 0 0 12px #8b5cf6",
-                  ],
-                }}
-                transition={{
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  duration: 1,
-                  delay: i * 0.05,
-                }}
-                className="text-white text-lg md:text-xl font-bold relative z-10"
-              >
-                {d}
-              </motion.span>
-            ))}
-          </div>
-        </div>
-      </motion.div>
+        <span className="text-white text-lg md:text-xl font-bold">{formattedTime}</span>
+      </div>
 
-      {/* Neon Location */}
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        className="flex items-center gap-2 bg-black/50 backdrop-blur-lg border border-white/10 rounded-xl px-4 py-2 shadow-[0_0_40px_rgba(79,70,229,0.7)]"
-      >
+      {/* Location */}
+      <div className="flex items-center gap-2 bg-black/50 backdrop-blur-lg border border-white/10 rounded-xl px-4 py-2 shadow-[0_0_40px_rgba(79,70,229,0.7)]">
         <MapPin size={20} className="text-cyan-400 animate-pulse" />
         <span className="text-white">{location}</span>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
 /* Hero Component */
 export default function Hero() {
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const springX = useSpring(cursorX, { stiffness: 200, damping: 20 });
-  const springY = useSpring(cursorY, { stiffness: 200, damping: 20 });
-
-  useEffect(() => {
-    const move = (e) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
-    };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, [cursorX, cursorY]);
-
   return (
-    <div  className="w-full min-h-screen text-white relative overflow-visible">
+    <div className="w-full min-h-screen text-white relative overflow-visible">
       {/* Background */}
       <NeonBackground />
 
-      {/* Neon Cursor */}
-      <motion.div
-        style={{ x: springX, y: springY }}
-        className="fixed top-0 left-0 w-8 h-8 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full pointer-events-none mix-blend-screen z-50"
-      />
-
       {/* Hero Content */}
-      <div  className="flex flex-col items-center justify-start text-center px-6 pt-8 relative z-10">
+      <div className="flex flex-col items-center justify-start text-center px-6 pt-8 relative z-10">
         <span className="px-4 py-2 text-sm bg-white/10 rounded-full border border-white/10 mb-4 inline-block">
           ⚡ Available for opportunities
         </span>
@@ -166,21 +83,16 @@ export default function Hero() {
         </p>
 
         {/* Profile Picture */}
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", delay: 0.5 }}
-          className="relative mt-10 w-44 h-44 rounded-full overflow-hidden border-4 border-purple-500 shadow-[0_0_60px_rgba(168,85,247,0.6)]"
-        >
+        <div className="relative mt-10 w-44 h-44 rounded-full overflow-hidden border-4 border-purple-500 shadow-[0_0_60px_rgba(168,85,247,0.6)]">
           <img
             src={profilePic}
             alt="ASWIN"
             className="w-full h-full object-cover"
           />
-        </motion.div>
+        </div>
 
-        {/* Magnetic Cards with direct download */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 md:grid-cols-4 gap-4 md:gap-[10px] mt-16 mb-8 justify-items-center">
+        {/* Magnetic Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-16 mb-8 justify-items-center">
           <MagneticCard
             icon={<FileText size={30} />}
             label="RESUME"

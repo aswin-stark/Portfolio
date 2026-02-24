@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
 import {
   FiMail,
   FiGithub,
@@ -16,6 +15,7 @@ export default function Contact() {
   const [statusColor, setStatusColor] = useState("");
   const mouse = useRef({ x: 0, y: 0 });
   const formRef = useRef(null);
+  const cardRefs = useRef([]);
 
   // ===== Neon Stars Background =====
   useEffect(() => {
@@ -81,11 +81,34 @@ export default function Contact() {
       );
   };
 
+  // ===== Scroll Fade-In for Cards =====
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = entry.target.dataset.index || 0;
+            entry.target.style.transitionDelay = `${index * 0.2}s`;
+            entry.target.classList.add("fade-in");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    cardRefs.current.forEach((card) => {
+      if (card) observer.observe(card);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
       id="contact"
       className="min-h-screen relative text-white px-6 py-16 overflow-hidden"
-      style={{ scrollMarginTop: "50px" }} // fixed header offset
+      style={{ scrollMarginTop: "-10px" }}
     >
       {/* Neon Stars */}
       {stars.map((star, idx) => {
@@ -111,14 +134,13 @@ export default function Contact() {
       })}
 
       {/* Heading */}
-      <motion.div
-        initial={{ opacity: 0, y: -40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-        viewport={{ once: true }}
-        className="text-center mb-14 relative z-10"
+      <div
+        ref={(el) => (cardRefs.current[0] = el)}
+        data-index={0}
+        className="text-center mb-14 relative z-10 opacity-0 transform translate-y-12 transition-all duration-700"
+         
       >
-        <span className="px-4 py-1 bg-[#1c1c3a] text-2xl rounded-full text-purple-400 animate-pulse">
+        <span className="px-4 py-1 bg-[#1c1c3a] text-2xl rounded-full text-purple-400 animate-pulse" >
           Contact
         </span>
         <h2 className="text-3xl md:text-5xl font-bold mt-8">
@@ -127,16 +149,15 @@ export default function Contact() {
         <p className="text-gray-400 mt-3 text-sm">
           Interested in collaboration or just want to say hi?
         </p>
-      </motion.div>
+      </div>
 
       {/* Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
         {/* Connect */}
-        <motion.div
-          initial={{ opacity: 0, x: -60 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
+        <div
+          ref={(el) => (cardRefs.current[1] = el)}
+          data-index={1}
+          className="opacity-0 transform translate-y-12 transition-all duration-700"
         >
           <h3 className="text-xl font-semibold mb-5">Connect With Me</h3>
           <p className="text-gray-400 mb-6 text-sm">Find me on these platforms.</p>
@@ -156,13 +177,12 @@ export default function Contact() {
                 href: "https://www.linkedin.com/in/aswin-s-b74136210/",
               },
             ].map((social, idx) => (
-              <motion.a
+              <a
                 key={idx}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.04 }}
-                className="bg-[#151530] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl"
+                className="bg-[#151530] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl transition-transform transform hover:scale-105"
               >
                 <div
                   className={`${social.color} p-3 rounded-xl flex items-center justify-center`}
@@ -172,17 +192,16 @@ export default function Contact() {
                 <div>
                   <p className="text-white text-2xl">{social.label}</p>
                 </div>
-              </motion.a>
+              </a>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Form */}
-        <motion.div
-          initial={{ opacity: 0, x: 60 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
+        <div
+          ref={(el) => (cardRefs.current[2] = el)}
+          data-index={2}
+          className="opacity-0 transform translate-y-12 transition-all duration-700"
         >
           <h3 className="text-xl font-semibold mb-5">Send a Message</h3>
           <div className="bg-[#151530] p-6 rounded-[1.75rem] shadow-xl">
@@ -208,13 +227,12 @@ export default function Contact() {
                 className="bg-[#1f1f3f] p-3 rounded-lg w-full text-sm outline-none focus:ring-2 focus:ring-purple-600"
               />
 
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 py-3 rounded-xl font-semibold flex justify-center items-center gap-2 shadow-lg"
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 py-3 rounded-xl font-semibold flex justify-center items-center gap-2 shadow-lg transition-transform transform hover:scale-105 active:scale-95"
               >
                 <FiSend /> Send Message
-              </motion.button>
+              </button>
 
               {statusMessage && (
                 <p className={`text-center text-sm mt-3 ${statusColor}`}>
@@ -227,14 +245,13 @@ export default function Contact() {
               "Work hard in silence, let your success make the noise."
             </p>
           </div>
-        </motion.div>
+        </div>
 
         {/* Contact Info */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
+        <div
+          ref={(el) => (cardRefs.current[3] = el)}
+          data-index={3}
+          className="opacity-0 transform translate-y-12 transition-all duration-700"
         >
           <h3 className="text-xl font-semibold mb-5">Contact Me</h3>
           <p className="text-gray-400 mb-6 text-sm">Reach me directly.</p>
@@ -263,13 +280,12 @@ export default function Contact() {
               },
             ].map((info, idx) =>
               info.href ? (
-                <motion.a
+                <a
                   key={idx}
                   href={info.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.04 }}
-                  className="bg-[#1f1f3f] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl cursor-pointer"
+                  className="bg-[#1f1f3f] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl transition-transform transform hover:scale-105"
                 >
                   <div
                     className={`${info.color} p-3 rounded-xl flex items-center justify-center`}
@@ -280,12 +296,11 @@ export default function Contact() {
                     <p className="text-gray-400 text-xs">{info.label}</p>
                     <p className="text-white text-sm font-semibold">{info.value}</p>
                   </div>
-                </motion.a>
+                </a>
               ) : (
-                <motion.div
+                <div
                   key={idx}
-                  whileHover={{ scale: 1.04 }}
-                  className="bg-[#1f1f3f] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl"
+                  className="bg-[#1f1f3f] p-5 rounded-[1.75rem] flex items-center gap-4 shadow-xl transition-transform transform hover:scale-105"
                 >
                   <div
                     className={`${info.color} p-3 rounded-xl flex items-center justify-center`}
@@ -296,12 +311,20 @@ export default function Contact() {
                     <p className="text-gray-400 text-xs">{info.label}</p>
                     <p className="text-white text-sm font-semibold">{info.value}</p>
                   </div>
-                </motion.div>
+                </div>
               )
             )}
           </div>
-        </motion.div>
+        </div>
       </div>
+
+      {/* ===== CSS for fade-in ===== */}
+      <style>{`
+        .fade-in {
+          opacity: 1 !important;
+          transform: translateY(0px) !important;
+        }
+      `}</style>
     </section>
   );
 }

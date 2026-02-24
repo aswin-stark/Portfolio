@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   SiPython,
   SiJavascript,
@@ -108,7 +107,7 @@ export default function Skills() {
   ];
 
   return (
-    <section id="skills" className="min-h-screen relative  text-white px-6 py-24 overflow-hidden">
+    <section id="skills" className="min-h-screen relative text-white px-6 py-24 overflow-hidden">
      
       {/* ====================== NEON STARS ====================== */}
       {stars.map((star, idx) => (
@@ -128,45 +127,27 @@ export default function Skills() {
 
       {/* ====================== HEADER ====================== */}
       <div className="text-center mb-20 relative z-10">
-      
         <span className="px-4 py-1 text-sm bg-white/10 border border-white/10 rounded-full animate-pulse">
           Technical Skills
         </span>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-          className="mt-6 text-4xl md:text-5xl font-bold tracking-wide"
-        >
+        <h2 className="mt-6 text-4xl md:text-5xl font-bold tracking-wide">
           My{" "}
           <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-blue-400 bg-clip-text text-transparent">
             Expertise
           </span>
-        </motion.h2>
+        </h2>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-gray-400 mt-4 max-w-xl mx-auto text-lg font-light tracking-wide"
-        >
+        <p className="text-gray-400 mt-4 max-w-xl mx-auto text-lg font-light tracking-wide">
           Click on a card to see a detailed pop-up with all related skills!
-        </motion.p>
+        </p>
       </div>
 
       {/* ====================== SKILLS GRID ====================== */}
       <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
         {skillsData.map((category, index) => (
-          <motion.div
+          <div
             key={index}
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: index * 0.15 }}
-            whileHover={{ scale: 1.05 }}
-            viewport={{ once: true }}
             className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-6 shadow-xl relative group overflow-hidden cursor-pointer"
             onClick={() => setSelectedCard(category)}
           >
@@ -192,52 +173,39 @@ export default function Skills() {
                 </span>
               ))}
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 
       {/* ====================== MODAL POP-UP ====================== */}
-      <AnimatePresence>
-        {selectedCard && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-lg flex items-center justify-center px-4"
-          >
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 120, damping: 15 }}
-              className="bg-[#120c2e] rounded-3xl p-8 max-w-lg w-full shadow-2xl relative"
+      {selectedCard && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-lg flex items-center justify-center px-4">
+          <div className="bg-[#120c2e] rounded-3xl p-8 max-w-lg w-full shadow-2xl relative">
+            <button
+              onClick={() => setSelectedCard(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white"
             >
-              <button
-                onClick={() => setSelectedCard(null)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-white"
-              >
-                ✖
-              </button>
+              ✖
+            </button>
 
-              <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-500 to-blue-400 bg-clip-text text-transparent">
-                {selectedCard.title}
-              </h3>
+            <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-500 to-blue-400 bg-clip-text text-transparent">
+              {selectedCard.title}
+            </h3>
 
-              <div className="flex flex-wrap gap-4 justify-center">
-                {selectedCard.skills.map((skill, idx) => (
-                  <div
-                    key={idx}
-                    className="flex flex-col items-center gap-2 bg-white/10 rounded-2xl p-3 w-24 transition-all hover:scale-110 hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] cursor-default"
-                  >
-                    <div className="text-purple-400 text-3xl">{skill.icon}</div>
-                    <span className="text-sm text-white text-center">{skill.name}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <div className="flex flex-wrap gap-4 justify-center">
+              {selectedCard.skills.map((skill, idx) => (
+                <div
+                  key={idx}
+                  className="flex flex-col items-center gap-2 bg-white/10 rounded-2xl p-3 w-24 transition-all hover:scale-110 hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] cursor-default"
+                >
+                  <div className="text-purple-400 text-3xl">{skill.icon}</div>
+                  <span className="text-sm text-white text-center">{skill.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ====================== ANIMATIONS ====================== */}
       <style>{`

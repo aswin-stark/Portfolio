@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { GraduationCap, BookOpen } from "lucide-react";
 
 export default function Education() {
@@ -26,7 +25,9 @@ export default function Education() {
 
   const [stars, setStars] = useState([]);
   const mouse = useRef({ x: 0, y: 0 });
+  const cardRefs = useRef([]);
 
+  // ====================== Neon Stars ======================
   useEffect(() => {
     const starArray = Array.from({ length: 100 }, () => ({
       x: Math.random() * window.innerWidth,
@@ -53,12 +54,36 @@ export default function Education() {
     return () => clearInterval(interval);
   }, []);
 
+  // ====================== Mouse Movement ======================
   useEffect(() => {
     const handleMouseMove = e => {
       mouse.current = { x: e.clientX, y: e.clientY };
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  // ====================== Staggered Fade-In on Scroll ======================
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const index = entry.target.dataset.index || 0;
+            entry.target.style.transitionDelay = `${index * 0.2}s`;
+            entry.target.classList.add("fade-in");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    cardRefs.current.forEach(card => {
+      if (card) observer.observe(card);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -107,19 +132,11 @@ export default function Education() {
       {/* Education Cards */}
       <div className="max-w-4xl mx-auto flex flex-col gap-8 sm:gap-12 relative z-10">
         {educationData.map((edu, index) => (
-          <motion.div
+          <div
             key={index}
-            initial={{ opacity: 0, y: 80, scale: 0.9, rotate: -1 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-            transition={{
-              duration: 0.8,
-              delay: index * 0.2,
-              type: "spring",
-              stiffness: 120,
-              damping: 15,
-            }}
-            whileHover={{ scale: 1.03, rotate: 0.5, transition: { type: "spring", stiffness: 180 } }}
-            className={`relative bg-gradient-to-r ${edu.gradient} border border-white/20 backdrop-blur-2xl rounded-2xl sm:rounded-[2rem] p-6 sm:p-10 shadow-2xl overflow-hidden group cursor-pointer`}
+            ref={el => (cardRefs.current[index] = el)}
+            data-index={index}
+            className={`opacity-0 transform translate-y-12 relative bg-gradient-to-r ${edu.gradient} border border-white/20 backdrop-blur-2xl rounded-2xl sm:rounded-[2rem] p-6 sm:p-10 shadow-2xl overflow-hidden group cursor-pointer transition-all duration-700 hover:scale-105 hover:rotate-0.5`}
           >
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
               {/* Icon */}
@@ -143,9 +160,17 @@ export default function Education() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
+
+      {/* ================= CSS for fade-in ================= */}
+      <style>{`
+        .fade-in {
+          opacity: 1 !important;
+          transform: translateY(0px) !important;
+        }
+      `}</style>
     </section>
   );
 }
