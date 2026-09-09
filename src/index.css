@@ -1,24 +1,81 @@
 @import "tailwindcss";
 
-:root {
-  --accent: #ff3355;
-  --accent-dark: #c81e3a;
-  --accent-glow: #ff6b81;
-  --bg: #08080a;
-  --surface: #131318;
-  --surface-2: #1a1a21;
+/* Display: Oswald (condensed, uppercase). Body: Lato. Latin subsets only. */
+@import "@fontsource-variable/oswald/wght.css";
+@import "@fontsource/lato/latin-400.css";
+@import "@fontsource/lato/latin-700.css";
+@import "@fontsource/lato/latin-900.css";
+
+@theme {
+  /* ── Color ─────────────────────────────────────────── */
+  --color-accent: #ff2d4d;
+  --color-accent-deep: #c1001f;
+  --color-ink: #0a0a0b;
+  --color-surface: #141416;
+  --color-surface-2: #1c1c20;
+  --color-hair: #26262b;
+  --color-mute: #9a9ea1;
+
+  /* ── Type ──────────────────────────────────────────── */
+  --font-display: "Oswald Variable", "Oswald", sans-serif;
+  --font-body: "Lato", system-ui, sans-serif;
+
+  /* ── Shape ─────────────────────────────────────────── */
+  --radius-card: 20px;
+  --radius-pill: 999px;
+
+  /* ── Motion ────────────────────────────────────────── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
+
+/* ─────────────────────────────────────────────────────────
+   Base
+   ───────────────────────────────────────────────────────── */
 
 html {
   scroll-behavior: smooth;
 }
 
+/* Lenis owns the scroll once mounted */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 body {
-  background-color: var(--bg);
+  background-color: var(--color-ink);
+  color: var(--color-mute);
+  font-family: var(--font-body);
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+body.is-locked {
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-transform: uppercase;
 }
 
 ::selection {
-  background: var(--accent);
+  background: var(--color-accent);
   color: #fff;
 }
 
@@ -26,101 +83,385 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: var(--color-ink);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--surface-2);
-  border-radius: 999px;
+  background: var(--color-surface-2);
+  border-radius: var(--radius-pill);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-dark);
+  background: var(--color-accent-deep);
 }
 
+/* Keyboard focus is always visible. Never outline:none. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   Reusable pieces
+   ───────────────────────────────────────────────────────── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Section shell: consistent vertical rhythm + gutter */
+.section-shell {
+  position: relative;
+  padding-block: clamp(6rem, 12vw, 10rem);
+  padding-inline: 24px;
+}
+
+.shell {
+  max-width: 1320px;
+  margin-inline: auto;
+}
+
+/* Giant ghosted word behind a section */
+.watermark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: #fff;
+  opacity: 0.022;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Ghosted index numeral on service cards */
+.ghost-index {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  opacity: 0.06;
+  transition: opacity 300ms var(--ease-out-quart);
+}
+
+/* Film grain — replaces MyStory's 3.9MB of decorative GIFs at 0 bytes */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  opacity: 0.045;
+  pointer-events: none;
+  animation: grain 8s steps(6) infinite;
+}
+
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-4%, 3%);
+  }
+  40% {
+    transform: translate(3%, -4%);
+  }
+  60% {
+    transform: translate(-3%, -3%);
+  }
+  80% {
+    transform: translate(4%, 4%);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   Custom cursor (fine pointers only, see Cursor.jsx)
+   The native cursor is never hidden — this is additive.
+   ───────────────────────────────────────────────────────── */
+
+.cursor-ring,
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+}
+
+.cursor-ring {
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent);
+  border-radius: 50%;
+  transition: width 250ms var(--ease-out-quart), height 250ms var(--ease-out-quart),
+    margin 250ms var(--ease-out-quart), background-color 250ms var(--ease-out-quart),
+    border-color 250ms var(--ease-out-quart);
+}
+
+.cursor-ring.cursor--hover {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background-color: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  border-color: var(--color-accent);
+}
+
+/* Label inside the ring: data-cursor="View" / "Drag" */
+.cursor-ring::after {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out-quart);
+}
+
+.cursor-ring.cursor--hover::after {
+  opacity: 1;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+/* ─────────────────────────────────────────────────────────
+   Keyframes
+   ───────────────────────────────────────────────────────── */
+
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 .animate-marquee {
-  animation: marquee 22s linear infinite;
+  animation: marquee var(--marquee-duration, 26s) linear infinite;
 }
 
 @keyframes marquee-reverse {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 .animate-marquee-reverse {
-  animation: marquee-reverse 26s linear infinite;
+  animation: marquee-reverse var(--marquee-duration, 32s) linear infinite;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
-}
-.animate-float {
-  animation: float 5s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-.animate-shimmer {
-  background-size: 200% 100%;
-  animation: shimmer 2.2s linear infinite;
-}
-
-@keyframes spin-slow {
-  to { transform: rotate(360deg); }
-}
-.animate-spin-slow {
-  animation: spin-slow 18s linear infinite;
-}
-
-@keyframes dash {
-  to { stroke-dashoffset: -120; }
-}
-.animate-dash {
-  stroke-dasharray: 0.5 8;
-  animation: dash 2.5s linear infinite;
+/* Marquee pauses on hover AND on keyboard focus */
+.marquee-track:hover .animate-marquee,
+.marquee-track:hover .animate-marquee-reverse,
+.marquee-track:focus-within .animate-marquee,
+.marquee-track:focus-within .animate-marquee-reverse {
+  animation-play-state: paused;
 }
 
 @keyframes blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 .animate-blink {
   animation: blink 1s step-start infinite;
 }
 
 @keyframes drift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(40px, 30px) scale(1.08); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(40px, 30px) scale(1.08);
+  }
 }
 @keyframes drift-slow {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-30px, 40px) scale(1.1); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-30px, 40px) scale(1.1);
+  }
 }
-@keyframes drift-slower {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(30px, -30px) scale(1.05); }
+.animate-drift {
+  animation: drift 24s ease-in-out infinite;
 }
-.animate-drift { animation: drift 22s ease-in-out infinite; }
-.animate-drift-slow { animation: drift-slow 28s ease-in-out infinite; }
-.animate-drift-slower { animation: drift-slower 34s ease-in-out infinite; }
+.animate-drift-slow {
+  animation: drift-slow 30s ease-in-out infinite;
+}
+
+/* Slow idle zoom on the hero portrait */
+@keyframes slow-zoom {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+.animate-slow-zoom {
+  animation: slow-zoom 16s ease-in-out infinite;
+}
 
 @keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
 }
 .heartbeat {
   animation: heartbeat 1.5s infinite;
 }
 
 @keyframes gradient-slide {
-  0% { background-position: 0% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 .gradient-top-border {
   background-size: 200% 100%;
   animation: gradient-slide 4s linear infinite;
+}
+
+/* Orbit rings around the compact mobile avatar */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 16s linear infinite;
+}
+
+@keyframes spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+.animate-spin-reverse {
+  animation: spin-reverse 22s linear infinite;
+}
+
+/* Breathing glow behind the avatar */
+@keyframes halo {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+.animate-halo {
+  animation: halo 4.5s ease-in-out infinite;
+}
+
+/* Light sweep across the solid marquee band */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-140%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(560%) skewX(-18deg);
+  }
+}
+.animate-shimmer {
+  animation: shimmer 4.5s ease-in-out infinite;
+}
+
+/* Scroll cue chevron */
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+.animate-nudge {
+  animation: nudge 1.8s ease-in-out infinite;
+}
+
+@keyframes preloader-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-14px);
+    opacity: 1;
+  }
+}
+.animate-preloader-bounce {
+  animation: preloader-bounce 1.1s var(--ease-out-quart) infinite;
+}
+
+/* ─────────────────────────────────────────────────────────
+   Reduced motion — a real branch, not an afterthought.
+   Every JS effect also checks this; see hooks/ and Cursor.jsx.
+   ───────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .grain::after {
+    display: none;
+  }
+
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
+    transform: none !important;
+  }
 }

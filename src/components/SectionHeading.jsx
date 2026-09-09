@@ -1,19 +1,60 @@
+import { motion, useReducedMotion } from "framer-motion";
 import Reveal from "./Reveal";
+import SplitText from "./SplitText";
 
-export default function SectionHeading({ eyebrow, title, highlight, subtitle, align = "center" }) {
-  const alignment = align === "center" ? "text-center mx-auto items-center" : "text-left items-start";
+/**
+ * Eyebrow (pulsing dot + uppercase label) over an Oswald display title
+ * whose words mask-reveal, with a red rule that scales in underneath.
+ */
+export default function SectionHeading({
+  eyebrow,
+  title,
+  highlight,
+  subtitle,
+  align = "center",
+  /* Kept separate from `className` so a caller can override it — two competing
+     margin utilities on one element are decided by stylesheet order, not by
+     which one was passed in. */
+  margin = "mb-14 sm:mb-20",
+  className = "",
+}) {
+  const reduce = useReducedMotion();
+  const centered = align === "center";
+
   return (
-    <Reveal className={`max-w-2xl mb-14 sm:mb-16 flex flex-col ${alignment}`}>
-      <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold tracking-[0.2em] uppercase rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 text-[var(--accent)]">
-        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-        {eyebrow}
-      </span>
-      <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-        {title} <span className="text-[var(--accent)]">{highlight}</span>
+    <div
+      className={`relative ${margin} flex flex-col ${
+        centered ? "items-center text-center mx-auto max-w-2xl" : "items-start text-left"
+      } ${className}`}
+    >
+      <Reveal>
+        <span className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-pill border border-accent/30 bg-accent/10">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          <span className="font-display text-[11px] font-semibold uppercase tracking-[0.28em] text-accent">
+            {eyebrow}
+          </span>
+        </span>
+      </Reveal>
+
+      <h2 className="mt-6 text-[clamp(2.25rem,6vw,4rem)]">
+        <SplitText text={title} mode="words" delay={0.05} />{" "}
+        <SplitText text={highlight} mode="words" delay={0.12} className="text-accent" />
       </h2>
+
+      <motion.span
+        aria-hidden
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: reduce ? 0.2 : 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        className={`mt-5 block h-px w-24 bg-accent origin-left ${centered ? "mx-auto" : ""}`}
+      />
+
       {subtitle && (
-        <p className="mt-4 text-gray-400 text-base sm:text-lg leading-relaxed">{subtitle}</p>
+        <Reveal delay={0.15}>
+          <p className="mt-6 text-mute text-base sm:text-lg leading-relaxed max-w-xl">{subtitle}</p>
+        </Reveal>
       )}
-    </Reveal>
+    </div>
   );
 }

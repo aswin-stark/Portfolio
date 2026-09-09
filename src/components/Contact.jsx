@@ -1,160 +1,194 @@
-import { useState, useRef } from "react";
-import {
-  FiMail,
-  FiGithub,
-  FiLinkedin,
-  FiPhone,
-  FiMapPin,
-  FiSend,
-} from "react-icons/fi";
-import emailjs from "@emailjs/browser";
+import { useRef, useState } from "react";
+import { FiMail, FiGithub, FiLinkedin, FiPhone, FiMapPin, FiSend } from "react-icons/fi";
+import emailjsBrowser from "@emailjs/browser";
+import { profile, emailjs as emailjsConfig } from "../data/profile.js";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
+const fields = [
+  { name: "user_name", label: "Your Name", type: "text", autoComplete: "name" },
+  { name: "user_phone", label: "Phone Number", type: "tel", autoComplete: "tel" },
+  { name: "email", label: "Your Email", type: "email", autoComplete: "email" },
+];
+
+const socialLinks = [
+  { icon: <FiGithub />, label: "GitHub", href: profile.github },
+  { icon: <FiLinkedin />, label: "LinkedIn", href: profile.linkedin },
+];
+
+const contactInfo = [
+  { icon: <FiMail />, label: "Email", value: profile.email, href: `mailto:${profile.email}` },
+  { icon: <FiPhone />, label: "Phone", value: profile.phone, href: profile.phoneHref },
+  { icon: <FiMapPin />, label: "Address", value: profile.location },
+];
+
 export default function Contact() {
-  const [statusMessage, setStatusMessage] = useState("");
-  const [statusColor, setStatusColor] = useState("");
+  const [status, setStatus] = useState(null); // { message, tone }
+  const [sending, setSending] = useState(false);
   const formRef = useRef(null);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    setStatusMessage("");
+    if (sending) return;
 
-    emailjs
+    setSending(true);
+    setStatus(null);
+
+    emailjsBrowser
       .sendForm(
-        "service_uoxrd3o",
-        "template_3t1widc",
+        emailjsConfig.serviceId,
+        emailjsConfig.templateId,
         formRef.current,
-        "_vcukmTXsEj1iYsyj"
+        emailjsConfig.publicKey
       )
       .then(
         () => {
-          setStatusMessage("✅ Message sent successfully! I will reach you soon.");
-          setStatusColor("text-green-400");
+          setStatus({ message: "Message sent. I'll get back to you soon.", tone: "ok" });
           formRef.current.reset();
-          setTimeout(() => setStatusMessage(""), 5000);
+          setTimeout(() => setStatus(null), 6000);
         },
         () => {
-          setStatusMessage("❌ Failed to send message. Please try again.");
-          setStatusColor("text-red-400");
-          setTimeout(() => setStatusMessage(""), 5000);
+          setStatus({ message: "Failed to send. Please try again or email me directly.", tone: "err" });
+          setTimeout(() => setStatus(null), 6000);
         }
-      );
+      )
+      .finally(() => setSending(false));
   };
 
   return (
-    <section id="contact" className="relative text-white px-6 py-24 sm:py-28">
-      <SectionHeading
-        eyebrow="Contact"
-        title="Let's"
-        highlight="Connect"
-        subtitle="Interested in collaboration or just want to say hi? I'd love to hear from you."
-      />
+    <section id="contact" className="section-shell overflow-hidden">
+      <span className="watermark absolute left-1/2 top-12 -translate-x-1/2 text-[15vw]" aria-hidden>
+        Let&apos;s Talk
+      </span>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Connect */}
-        <Reveal>
-          <h3 className="text-xl font-semibold mb-5">Connect With Me</h3>
-          <p className="text-gray-400 mb-6 text-sm">Find me on these platforms.</p>
+      <div className="shell relative">
+        <SectionHeading
+          eyebrow="Contact"
+          title="Let's"
+          highlight="Connect"
+          subtitle="Interested in collaboration or just want to say hi? I'd love to hear from you."
+        />
 
-          <div className="flex flex-col gap-4">
-            {[
-              { icon: <FiGithub />, label: "GitHub", href: "https://github.com/aswin-stark" },
-              { icon: <FiLinkedin />, label: "LinkedIn", href: "https://www.linkedin.com/in/aswin-s-b74136210/" },
-            ].map((social, idx) => (
-              <a
-                key={idx}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/5 border border-white/10 p-5 rounded-2xl flex items-center gap-4
-                hover:border-(--accent)/50 hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className="bg-(--accent)/15 text-(--accent) p-3 rounded-xl flex items-center justify-center text-xl">
-                  {social.icon}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {/* Connect */}
+          <Reveal>
+            <h3 className="mb-2 text-lg">Connect With Me</h3>
+            <p className="mb-7 text-sm text-mute">Find me on these platforms.</p>
+
+            <div className="flex flex-col gap-4">
+              {socialLinks.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-4 rounded-card border border-hair bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50"
+                >
+                  <span className="flex items-center justify-center rounded-xl bg-accent/12 p-3 text-lg text-accent transition-colors duration-300 group-hover:bg-accent group-hover:text-white">
+                    {s.icon}
+                  </span>
+                  <span className="font-display text-sm font-semibold uppercase tracking-[0.12em] text-white">
+                    {s.label}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </Reveal>
+
+          {/* Form */}
+          <Reveal delay={0.1}>
+            <h3 className="mb-2 text-lg">Send a Message</h3>
+            <p className="mb-7 text-sm text-mute">I usually reply within a day.</p>
+
+            <form ref={formRef} onSubmit={handleSendMessage} className="space-y-6" noValidate={false}>
+              {fields.map((f) => (
+                <div key={f.name} className="relative">
+                  <label htmlFor={f.name} className="sr-only">
+                    {f.label}
+                  </label>
+                  <input
+                    id={f.name}
+                    name={f.name}
+                    type={f.type}
+                    autoComplete={f.autoComplete}
+                    placeholder={f.label}
+                    required
+                    className="peer w-full border-0 border-b border-hair bg-transparent px-1 pb-3 text-sm text-white outline-none transition-colors duration-200 placeholder:text-white/30 focus:border-transparent"
+                  />
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] peer-focus:scale-x-100"
+                  />
                 </div>
-                <p className="text-white text-lg">{social.label}</p>
-              </a>
-            ))}
-          </div>
-        </Reveal>
-
-        {/* Form */}
-        <Reveal delay={0.1}>
-          <h3 className="text-xl font-semibold mb-5">Send a Message</h3>
-          <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-            <form ref={formRef} onSubmit={handleSendMessage} className="space-y-4">
-              {[
-                { name: "user_name", placeholder: "Your Name" },
-                { name: "user_phone", placeholder: "Phone Number" },
-                { name: "email", placeholder: "Your Email", type: "email" },
-              ].map((field, i) => (
-                <input
-                  key={i}
-                  type={field.type || "text"}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  className="bg-white/5 border border-white/10 p-3 rounded-lg w-full text-sm outline-none
-                  focus:ring-2 focus:ring-(--accent) focus:border-(--accent) transition"
-                />
               ))}
 
-              <textarea
-                name="message"
-                rows="4"
-                placeholder="Your Message"
-                className="bg-white/5 border border-white/10 p-3 rounded-lg w-full text-sm outline-none
-                focus:ring-2 focus:ring-(--accent) focus:border-(--accent) transition"
-              />
+              <div className="relative">
+                <label htmlFor="message" className="sr-only">
+                  Your Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  placeholder="Your Message"
+                  required
+                  className="peer w-full resize-none border-0 border-b border-hair bg-transparent px-1 pb-3 text-sm text-white outline-none transition-colors duration-200 placeholder:text-white/30 focus:border-transparent"
+                />
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 bottom-1.5 h-px origin-left scale-x-0 bg-accent transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] peer-focus:scale-x-100"
+                />
+              </div>
 
               <button
                 type="submit"
-                className="w-full bg-(--accent) hover:bg-(--accent-dark) py-3 rounded-xl font-semibold
-                flex justify-center items-center gap-2 shadow-lg shadow-(--accent)/30 transition-transform hover:scale-105 active:scale-95"
+                disabled={sending}
+                className="flex w-full items-center justify-center gap-2.5 rounded-pill bg-accent py-4 font-display text-sm font-semibold uppercase tracking-[0.16em] text-white transition-all duration-200 hover:bg-accent-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <FiSend /> Send Message
+                <FiSend /> {sending ? "Sending…" : "Send Message"}
               </button>
 
-              {statusMessage && (
-                <p className={`text-center text-sm mt-3 ${statusColor}`}>{statusMessage}</p>
-              )}
+              <p
+                role="status"
+                aria-live="polite"
+                className={`min-h-5 text-center text-sm ${
+                  status?.tone === "ok" ? "text-emerald-400" : "text-accent"
+                }`}
+              >
+                {status?.message ?? ""}
+              </p>
             </form>
-          </div>
-        </Reveal>
+          </Reveal>
 
-        {/* Contact Info */}
-        <Reveal delay={0.2}>
-          <h3 className="text-xl font-semibold mb-5">Contact Me</h3>
-          <p className="text-gray-400 mb-6 text-sm">Reach me directly.</p>
+          {/* Direct info */}
+          <Reveal delay={0.2}>
+            <h3 className="mb-2 text-lg">Contact Me</h3>
+            <p className="mb-7 text-sm text-mute">Reach me directly.</p>
 
-          <div className="flex flex-col gap-4">
-            {[
-              { icon: <FiMail />, label: "Email", value: "ajayaswin521@gmail.com", href: "mailto:ajayaswin521@gmail.com" },
-              { icon: <FiPhone />, label: "Phone", value: "+91 8144721458", href: "tel:+918144721458" },
-              { icon: <FiMapPin />, label: "Address", value: "Chennai, India" },
-            ].map((info, idx) => {
-              const Wrapper = info.href ? "a" : "div";
-              return (
-                <Wrapper
-                  key={idx}
-                  href={info.href}
-                  target={info.href ? "_blank" : undefined}
-                  rel={info.href ? "noopener noreferrer" : undefined}
-                  className="bg-white/5 border border-white/10 p-5 rounded-2xl flex items-center gap-4
-                  hover:border-(--accent)/50 hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className="bg-(--accent)/15 text-(--accent) p-3 rounded-xl flex items-center justify-center">
-                    {info.icon}
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs">{info.label}</p>
-                    <p className="text-white text-sm font-semibold">{info.value}</p>
-                  </div>
-                </Wrapper>
-              );
-            })}
-          </div>
-        </Reveal>
+            <div className="flex flex-col gap-4">
+              {contactInfo.map((info) => {
+                const Wrapper = info.href ? "a" : "div";
+                return (
+                  <Wrapper
+                    key={info.label}
+                    href={info.href}
+                    className="group flex items-center gap-4 rounded-card border border-hair bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50"
+                  >
+                    <span className="flex items-center justify-center rounded-xl bg-accent/12 p-3 text-accent transition-colors duration-300 group-hover:bg-accent group-hover:text-white">
+                      {info.icon}
+                    </span>
+                    <span>
+                      <span className="block font-display text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">
+                        {info.label}
+                      </span>
+                      <span className="block text-sm font-semibold text-white">{info.value}</span>
+                    </span>
+                  </Wrapper>
+                );
+              })}
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
