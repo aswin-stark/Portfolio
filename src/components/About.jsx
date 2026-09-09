@@ -1,171 +1,136 @@
-import React, { useEffect, useState } from "react";
-import "@fontsource/orbitron/700.css"; 
-import "@fontsource/poppins/400.css";   
+import { useRef } from "react";
+import { useInView } from "framer-motion";
+import "@fontsource/orbitron/700.css";
+import "@fontsource/poppins/400.css";
+import { FileText, Code2, Layers, GraduationCap, Sparkles } from "lucide-react";
+import profilePic from "../assets/profile.png";
+import resume from "../assets/resume.pdf";
+import Reveal from "./Reveal";
+import SectionHeading from "./SectionHeading";
+import useCountUp from "./useCountUp";
+
+const details = [
+  { label: "Name", value: "Aswin S" },
+  { label: "Degree", value: "MCA (2024 – 2026)" },
+  { label: "Email", value: "ajayaswin521@gmail.com" },
+  { label: "Phone", value: "+91 8144721458" },
+  { label: "Address", value: "Chennai, India" },
+  { label: "Language", value: "English" },
+  { label: "Availability", value: "Immediately Available" },
+];
+
+/* NOTE: placeholder figures — update these with your real numbers */
+const highlights = [
+  { icon: <Code2 size={20} />, value: 10, suffix: "+", label: "Projects Built" },
+  { icon: <Layers size={20} />, value: 15, suffix: "+", label: "Technologies Used" },
+  { icon: <GraduationCap size={20} />, value: 2, suffix: "", label: "Degrees Earned" },
+  { icon: <Sparkles size={20} />, value: 100, suffix: "%", label: "Quality Focus" },
+];
+
+function StatBox({ icon, value, suffix, label, active, delay }) {
+  const count = useCountUp(value, active, 1200 + delay);
+  return (
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center hover:border-(--accent)/50 hover:-translate-y-1 transition-all duration-300">
+      <div className="mx-auto mb-2 w-9 h-9 rounded-xl bg-(--accent)/10 text-(--accent) flex items-center justify-center">
+        {icon}
+      </div>
+      <p className="text-xl font-extrabold text-white leading-none">
+        {count}
+        <span className="text-(--accent)">{suffix}</span>
+      </p>
+      <p className="mt-1.5 text-[11px] text-gray-500 uppercase tracking-wide">{label}</p>
+    </div>
+  );
+}
 
 export default function About() {
-  // Neon Cursor
-  const [cursor, setCursor] = useState({ x: -100, y: -100 });
-
-  useEffect(() => {
-    const move = (e) => {
-      setCursor({ x: e.clientX - 16, y: e.clientY - 16 });
-    };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-
-  // Neon Stars
-  const [stars, setStars] = useState([]);
-  useEffect(() => {
-    const starArray = Array.from({ length: 100 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 3 + 1,
-      speed: Math.random() * 0.5 + 0.1,
-      color: `hsl(${Math.random() * 360}, 80%, 70%)`,
-    }));
-    setStars(starArray);
-
-    const interval = setInterval(() => {
-      setStars(prevStars =>
-        prevStars.map(s => {
-          let newX = s.x + s.speed * 2;
-          let newY = s.y + s.speed * 1.3;
-          if (newX > window.innerWidth) newX = 0;
-          if (newY > window.innerHeight) newY = 0;
-          return { ...s, x: newX, y: newY };
-        })
-      );
-    }, 16);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Fade-in on scroll for cards & paragraphs
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if(entry.isIntersecting){
-            entry.target.classList.add("fade-in");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    document.querySelectorAll(".scroll-fade").forEach(el => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
+  const statsRef = useRef(null);
+  const statsInView = useInView(statsRef, { once: true, margin: "-60px" });
 
   return (
     <section
       id="about"
-      className="min-h-screen relative text-white px-5 sm:px-10 py-24 sm:py-32 overflow-hidden font-poppins scroll-mt-0"
-       style={{ scrollMarginTop: "-50px" }}
+      className="relative text-white px-5 sm:px-10 py-24 sm:py-28 overflow-hidden font-poppins"
     >
-      {/* Neon Cursor */}
-      <div
-        style={{ left: cursor.x, top: cursor.y }}
-        className="fixed w-10 h-10 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full pointer-events-none mix-blend-screen shadow-2xl z-50 transition-all duration-75"
-      />
+      <SectionHeading eyebrow="About Me" title="Who" highlight="I Am" />
 
-      {/* Neon Stars */}
-      {stars.map((star, idx) => (
-        <div
-          key={idx}
-          style={{
-            width: star.size,
-            height: star.size,
-            top: star.y,
-            left: star.x,
-            backgroundColor: star.color,
-            boxShadow: `0 0 8px ${star.color}, 0 0 16px ${star.color}`,
-          }}
-          className="absolute rounded-full opacity-70 animate-pulse"
-        />
-      ))}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-14 items-start">
+        {/* Left: photo + tags + highlights */}
+        <Reveal x={-30} y={0} className="flex justify-center lg:justify-start">
+          <div className="w-72 sm:w-80">
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-[2rem] bg-(--accent)/20 blur-2xl" />
+              <div className="relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
+                <img src={profilePic} alt="Aswin S" className="w-full h-96 object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              </div>
 
-      {/* Title */}
-      <div className="text-center mb-10 relative z-10 px-2 scroll-fade opacity-0 translate-y-8 transition-all duration-1000">
-        <span className="px-4 py-2 text-lg sm:text-lg bg-white/10 rounded-full border border-white/20 animate-pulse tracking-widest">
-          About Me
-        </span>
-        <h2 className="mt-3 text-3xl sm:text-4xl md:text-5xl font-orbitron font-extrabold leading-tight tracking-wide bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-          Who I Am
-        </h2>
-        <p className="text-gray-400 mt-3 text-base sm:text-xl md:text-2xl tracking-wide px-2 sm:px-0">
-          Get to know me better
-        </p>
-      </div>
-
-      {/* Content */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-24 items-center relative z-10">
-
-        {/* Left Card */}
-        <div className="relative flex justify-center scroll-fade opacity-0 translate-y-12 transition-all duration-1000">
-          <div className="relative bg-white/5 border border-white/10 backdrop-blur-2xl rounded-3xl p-10 sm:p-16 w-[280px] sm:w-[360px] h-[320px] sm:h-[400px] flex flex-col items-center justify-center shadow-2xl hover:scale-105 sm:hover:scale-110 hover:rotate-2 transition-transform duration-500">
-            
-            {/* Glow */}
-            <div className="absolute inset-0 rounded-3xl bg-purple-600 opacity-20 blur-2xl sm:blur-3xl animate-pulse"></div>
-
-            {/* Emoji */}
-            <div className="text-6xl sm:text-8xl z-10 animate-bounce">👨‍💻</div>
-
-            {/* Tags */}
-            <div className="absolute -top-4 sm:-top-6 right-4 sm:right-6 bg-[#1f1b3a] border border-white/10 px-3 sm:px-5 py-1 sm:py-2 text-xs sm:text-sm rounded-full">
-              🐍 Python Dev
+              <div className="absolute -top-4 right-4 bg-[#131318] border border-white/10 px-4 py-2 text-xs sm:text-sm rounded-full shadow-lg">
+                🐍 Python Dev
+              </div>
+              <div className="absolute -bottom-4 left-4 bg-[#131318] border border-white/10 px-4 py-2 text-xs sm:text-sm rounded-full shadow-lg">
+                🎓 MCA Graduate
+              </div>
             </div>
-            <div className="absolute -bottom-4 sm:-bottom-6 left-4 sm:left-6 bg-[#1f1b3a] border border-white/10 px-3 sm:px-5 py-1 sm:py-2 text-xs sm:text-sm rounded-full">
-              🎓 MCA Graduate
+
+            <div ref={statsRef} className="grid grid-cols-2 gap-3 mt-12">
+              {highlights.map((h, i) => (
+                <Reveal key={h.label} delay={0.1 + i * 0.08}>
+                  <StatBox {...h} active={statsInView} delay={i * 200} />
+                </Reveal>
+              ))}
             </div>
           </div>
-        </div>
+        </Reveal>
 
-        {/* Right Content */}
-        <div className="scroll-fade opacity-0 translate-y-12 transition-all duration-1000">
-          <h3 className="text-2xl sm:text-3xl md:text-3xl font-orbitron font-semibold mb-3 sm:mb-4 tracking-wide">
-            Passionate Python Developer
-          </h3>
-
-          {[ 
-            "I'm Aswin, a dedicated Python Developer with a Master of Computer Applications (MCA) degree. I specialize in building efficient, scalable, and user-focused software solutions that solve real-world problems.",
-            "With a strong foundation in programming principles, data structures, and database management, I develop web applications, automation scripts, and backend systems using Python and related technologies.",
-            "I'm highly motivated to continuously learn emerging technologies and apply best practices in software development. I'm actively seeking opportunities to contribute my technical expertise and collaborate with dynamic teams.",
-          ].map((text, i) => (
-            <p key={i} className="relative group text-gray-300 leading-relaxed mb-4 sm:mb-5 text-base sm:text-lg md:text-xl font-poppins tracking-wide text-justify">
-              {/* Neon Glow */}
-              <span className="absolute inset-0 -z-10 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-[1200ms] ease-out bg-gradient-to-r from-purple-500/30 via-pink-500/40 to-blue-500/30 blur-2xl"></span>
-              {/* Flowing underline */}
-              <span className="absolute left-0 bottom-0 w-full h-[3px] sm:h-[4px] bg-gradient-to-r from-purple-400 via-pink-500 to-blue-400 bg-[length:200%_100%] animate-neon-flow blur-md opacity-60 group-hover:opacity-100 transition-all duration-500"></span>
-              {text}
+        {/* Right: bio + details */}
+        <div>
+          <Reveal>
+            <h3 className="text-2xl sm:text-3xl font-orbitron font-bold mb-4 tracking-wide">
+              Passionate Python Developer
+            </h3>
+            <p className="text-gray-400 leading-relaxed mb-4">
+              I'm Aswin, a dedicated Python Developer with a Master of Computer Applications (MCA)
+              degree. I specialize in building efficient, scalable, and user-focused software
+              solutions that solve real-world problems.
             </p>
-          ))}
+            <p className="text-gray-400 leading-relaxed mb-8">
+              With a strong foundation in programming principles, data structures, and database
+              management, I develop web applications, automation scripts, and backend systems
+              using Python and related technologies — and I'm always looking to learn more.
+            </p>
+          </Reveal>
 
-          {/* Skills */}
-          <div className="flex flex-wrap gap-3 sm:gap-4 mt-6 sm:mt-8">
-            {["Problem Solver", "Team Player", "Fast Learner", "Detail-Oriented"].map((skill, index) => (
-              <span key={index} className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-lg bg-white/10 border border-white/10 rounded-full cursor-default font-poppins tracking-wider hover:scale-105 transition-transform duration-300">
-                {skill}
-              </span>
-            ))}
-          </div>
+          <Reveal delay={0.1}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mb-8">
+              {details.map((d, i) => (
+                <div key={i} className="flex justify-between border-b border-white/10 pb-2">
+                  <span className="text-gray-500 text-sm">{d.label}</span>
+                  <span className="text-white text-sm font-medium">{d.value}</span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <div className="flex flex-wrap items-center gap-4">
+              <a
+                href={resume}
+                download="ASWIN_Resume.pdf"
+                className="inline-flex items-center gap-2 rounded-full px-7 py-3 font-semibold
+                bg-(--accent) hover:bg-(--accent-dark) hover:scale-105 transition shadow-lg shadow-(--accent)/30"
+              >
+                <FileText size={18} /> Download CV
+              </a>
+              {["Problem Solver", "Team Player", "Fast Learner"].map((skill, i) => (
+                <span key={i} className="px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-full text-gray-300">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </div>
-
-      <style>{`
-        @keyframes neon-flow {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .animate-neon-flow { animation: neon-flow 3s linear infinite; }
-
-        /* Fade-in */
-        .fade-in { opacity: 1 !important; transform: translateY(0px) !important; }
-      `}</style>
     </section>
   );
 }
