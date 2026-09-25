@@ -139,7 +139,11 @@ function SkillCard({ name, icon, level, index }) {
                 stroke="var(--color-accent)" strokeWidth="5" strokeLinecap="round"
                 strokeDasharray={CIRC}
                 initial={{ strokeDashoffset: CIRC }}
+<<<<<<< HEAD
                 animate={inView ? { strokeDashoffset: 0 } : {}}
+=======
+                animate={inView ? { strokeDashoffset: CIRC * (1 - level / 100) } : {}}
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
                 transition={{
                   duration: reduce ? 0.3 : 1.5,
                   delay: reduce ? 0 : 0.3 + (index % 3) * 0.09,
@@ -162,7 +166,13 @@ function SkillCard({ name, icon, level, index }) {
             <p className="font-display text-base font-semibold uppercase tracking-[0.1em] text-white">
               {name}
             </p>
+<<<<<<< HEAD
             
+=======
+            <p className="mt-1.5 font-display text-sm font-semibold tracking-[0.16em] text-accent">
+              {reduce ? level : count}%
+            </p>
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
           </div>
         </motion.article>
       </motion.div>
@@ -227,4 +237,7 @@ export default function SkillsBlock() {
     </div>
   );
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef

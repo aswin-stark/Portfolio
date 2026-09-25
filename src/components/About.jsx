@@ -38,7 +38,11 @@ function RotatingBadge() {
   return (
     <div
       aria-hidden
+<<<<<<< HEAD
       className="absolute -bottom-4 -right-4 sm:-bottom-7 sm:-right-5 z-20 flex h-20 w-20 sm:h-28 sm:w-28 items-center justify-center rounded-full border border-hair bg-ink/90 backdrop-blur"
+=======
+      className="absolute -bottom-7 -right-5 z-20 flex h-24 w-24 items-center justify-center rounded-full border border-hair bg-ink/90 backdrop-blur sm:h-28 sm:w-28"
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
     >
       <svg viewBox="0 0 100 100" className="animate-spin-slow absolute inset-0 h-full w-full">
         <defs>
@@ -179,11 +183,16 @@ export default function About() {
             <motion.div
               ref={photoRef}
               style={reduce ? undefined : { y: photoY }}
+<<<<<<< HEAD
               className="relative w-[85%] max-w-[18rem] sm:w-[21rem] sm:max-w-none mx-auto lg:mx-0 aspect-square"
+=======
+              className="relative w-[19rem] sm:w-[21rem]"
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
               initial="hidden"
               animate={photoShown ? "show" : "hidden"}
             >
               {/* offset frame sitting behind the photo */}
+<<<<<<< HEAD
               {/* Outer glowing orbital ring */}
               <motion.div
                 aria-hidden
@@ -204,6 +213,18 @@ export default function About() {
               />
 
               <div className="absolute -inset-6 rounded-full bg-accent/15 blur-3xl" aria-hidden />
+=======
+              <motion.span
+                aria-hidden
+                initial={{ opacity: 0, x: -14, y: -14 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
+                className="absolute inset-0 translate-x-5 translate-y-5 rounded-card border border-accent/40"
+              />
+
+              <div className="absolute -inset-6 rounded-[2rem] bg-accent/15 blur-3xl" aria-hidden />
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
 
               {/* Every inset value carries the same unit — mixing `0` and `0%`
                   leaves Framer unable to interpolate, and the image stays clipped. */}
@@ -215,7 +236,11 @@ export default function About() {
                     transition: { duration: reduce ? 0.2 : 1.05, ease: EASE },
                   },
                 }}
+<<<<<<< HEAD
                 className="grain absolute inset-0 overflow-hidden rounded-full border border-hair shadow-2xl"
+=======
+                className="grain relative overflow-hidden rounded-card border border-hair shadow-2xl"
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
               >
                 <img
                   src={profilePic}
@@ -223,17 +248,30 @@ export default function About() {
                   width="736"
                   height="834"
                   loading="lazy"
+<<<<<<< HEAD
                   className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105"
+=======
+                  className="h-96 w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105"
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
               </motion.div>
 
+<<<<<<< HEAD
+=======
+              <Corners />
+
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
+<<<<<<< HEAD
                 className="absolute -top-4 -right-2 sm:-right-4 z-20 rounded-pill border border-hair bg-surface px-3 py-1.5 sm:px-4 sm:py-2 shadow-lg"
+=======
+                className="absolute -top-4 right-6 z-20 rounded-pill border border-hair bg-surface px-4 py-2 shadow-lg"
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
               >
                 <span className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
                   Python Dev
@@ -245,7 +283,11 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.6, delay: 0.62, ease: EASE }}
+<<<<<<< HEAD
                 className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 z-20 rounded-pill border border-hair bg-surface px-3 py-1.5 sm:px-4 sm:py-2 shadow-lg"
+=======
+                className="absolute -bottom-4 left-4 z-20 rounded-pill border border-hair bg-surface px-4 py-2 shadow-lg"
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
               >
                 <span className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
                   MCA Graduate
@@ -362,8 +404,11 @@ export default function About() {
     </section>
   );
 }
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> b8b2b69627cd7fd8dcbeba0cfe4acc908c1b88ef
