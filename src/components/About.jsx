@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { FileText, Code2, Layers, GraduationCap, Sparkles, ArrowDown } from "lucide-react";
-import profilePic from "../assets/profile.webp";
+import profilePic from "../assets/profile.png";
 import resume from "../assets/resume.pdf";
 import { profile } from "../data/profile.js";
 import Reveal from "./Reveal";
@@ -362,6 +362,7 @@ export default function About() {
     </section>
   );
 }
+
 
 
 

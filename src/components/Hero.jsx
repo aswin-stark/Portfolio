@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, useTransform, useReducedMotion } from "framer-motion";
 import { Mail, FileText, Linkedin, Github, ArrowUpRight, ChevronDown } from "lucide-react";
-import profilePic from "../assets/profile.webp";
+import profilePic from "../assets/profile.png";
 import resume from "../assets/resume.pdf";
 import { profile } from "../data/profile.js";
 import useTilt from "../hooks/useTilt.js";
@@ -469,3 +469,4 @@ export default function Hero() {
     </section>
   );
 }
+
