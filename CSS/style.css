@@ -1,0 +1,1003 @@
+body{
+    margin: 0%;
+    font-family: roboto,sans-serif;
+  
+}
+.picture {
+    top: 20px;
+    position: relative;
+    width: 250px; /* container size based on larger bg2 */
+    height: 250px;
+}
+
+.bg2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 250px;
+    background-color: gray;
+    border-radius: 50%;
+    z-index: 1; /* behind the image */
+}
+
+.bg1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%); /* center the image */
+    z-index: 2; /* on top */
+}
+.side{
+    color: aliceblue;
+    text-align: center;
+     display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+aside{
+   
+    width: 400px; 
+    background-color: #040B14;
+    height: 100vh;
+    position: fixed;
+    
+}
+aside > h2{
+    
+    color: antiquewhite;
+}
+.social-icons {
+    display: flex;
+    gap: 30px;
+}
+nav > a{
+    color: azure;
+    display: flex;
+    font-size: x-large;
+    line-height: 2;
+    gap: 20px;
+    text-decoration: none;
+}
+nav > a:hover{
+    color: lightblue;
+    cursor: pointer;
+}
+nav{
+    display: flex;
+    flex-direction: column;
+   gap: 10px;
+    
+}
+nav > a{
+    margin-left: 20px;
+}
+.foots{
+    display: none;
+}
+/* .image{
+    background-image: url(/ASSESTS/aswin.png);
+    width: 100%;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+} */
+/* CSS/style.css */
+.image {
+  background-image: url(../ASSESTS/aswin.png);
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.divide{
+   display: flex;
+   flex-direction: row;
+}
+main{
+    margin-left: 400px;
+    flex: 1;
+}
+.name{
+    color: #feffff;
+    margin: 0%;
+    position: absolute;
+    top: 50%;
+    left: 450px;
+    font-size: 80px;
+    text-shadow: 5px 5px hsl(214, 84%, 55%);
+}
+.image > p{
+    color: #feffff;
+    margin: 0%;
+        position: absolute;
+    top: 60%;
+    left: 450px;
+    font-size: 60px;
+    text-shadow: 5px 5px hsl(214, 84%, 55%);
+}
+.about{
+    margin-left: 410px;
+   
+    height: 100vh;
+}
+.line{
+    border-bottom: 2px solid rgb(54, 164, 203);
+    width: 150px;
+    height: 5px;       
+    margin-top: -50px; 
+    margin-left: 40px;
+}
+.about > h2{
+    font-size: 60px;
+    margin-left: 40px;
+}
+.about_header{
+    display: flex;
+}
+.about_header > img{
+    margin-top: 10px;
+    margin-left: 40px;
+}
+.subject > h2{
+    margin-top: 0%;
+    margin-left: 20px;
+    font-size: 50px;
+}
+.subject > p{
+     margin-left: 20px;
+}
+.info-line {
+    display: flex;
+    align-items: center;  
+    gap: 5px;             
+}
+.dot{
+    margin-left: 20px;
+}
+.liness{
+    display: flex;
+    align-items: center;
+}
+.lines{
+    color: rgb(38, 59, 213);
+    display: grid;
+    grid-template-columns: auto auto;
+    row-gap: 20px;
+    
+}
+.sub {
+    display: flex;        
+    align-items: center; 
+    gap: 10px;      
+    font-size: 25px;     
+}
+.education{
+    margin-top: 0%;
+    margin-left: 415px;
+    height: 500px;
+}
+.edu_head > h2{
+    font-size: 50px;
+    margin-top: 0px;
+    margin-bottom: 0%;
+}
+.edu_head > hr{
+width: 280px;
+margin-left: 0px;
+border: 1px solid rgb(81, 212, 186);
+}
+.edu{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 60px;
+}
+.certificate{
+    margin-top: 0%;
+    margin-left: 415px;
+    height: 400px;
+}
+.certi > h2{
+     font-size: 50px;
+    margin-top: 0px;
+    margin-bottom: 0%;
+}
+.lists{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 40px;
+}
+.sub_list{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.certi > hr{
+    width: 300px;
+    margin-left: 0%;
+    border: 1px solid rgb(69, 156, 199);
+}
+.edu-cert-wrapper {
+    display: flex;
+    flex-wrap: wrap; /* Makes it responsive */
+    gap: 2rem; /* Space between education and certificate */
+    padding: 2rem;
+}
+.education,
+.certificate {
+    flex: 1 1 50%;
+    background-color: #f9f9f9; /* Optional: background for clarity */
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+.contact{
+    margin-left: 415px;
+}
+.horiz{
+    width: 200px;
+    margin-left: 45px;
+
+    border: 1px solid aqua;
+    margin-bottom: 20px;
+}
+.contact{
+    height: 90vh;
+}
+.adds{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 40px;
+}
+.cons > h1{
+margin: 40px;
+font-size: 50px;
+margin-bottom: 0px;
+}
+.first_part{
+    background-color: rgb(255, 255, 255);
+    width: 450px;
+    display: flex;
+    box-shadow: 5px 5px 5px 5px gray;
+    border-radius: 10px;
+    margin-left: 40px;
+}
+.second_part{
+    background-color: aquamarine;
+    width: 800px;
+    margin-left: 80px;
+    border-radius: 10px;
+     background-color: rgb(255, 255, 255);
+      box-shadow: 5px 5px 5px 5px gray;
+      box-sizing: border-box;
+      padding: 20px;
+}
+.first_sec{
+    display: grid;
+    grid-template-columns: 50px auto;
+    
+}
+.subb{
+    display: flex;
+    align-items: center;
+  
+}
+.second_part > h1{
+    font-size: 40px;
+    margin-top: 0px;
+    margin-bottom: 40px;
+}
+iframe{
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+
+}
+.conts{
+
+    display: grid;
+    grid-template-columns: auto auto;
+}
+label{
+    font-size: 20px;
+}
+.inp{
+    width: 310px;
+    padding: 13px;
+    border-radius: 10px;
+}
+.full{
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.inp1{
+    width: 95%;
+    padding: 13px;
+}
+form{
+    width: 700px;
+}
+.inp2{
+    width: 95%;
+    padding: 13px ;
+    height: 200px;
+}
+.bt{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+button{
+    padding: 15px;
+    border-radius: 50px;
+    background-color: rgb(81, 175, 218);
+    border: none;
+    color: #f9f9f9;
+}
+footer{ 
+    height: 200px;
+    display: flex;
+    align-items: center;
+}
+.foot > p{
+    color: #040B14;
+}
+
+footer {
+    background-color: #44a2c4; 
+    color: rgb(4, 4, 4);           
+    text-align: center;     
+    padding: 20px 0;        
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+   
+    display: flex;
+    justify-content: center;
+    margin-left: 400px;
+    
+   
+}
+
+@media only screen and (max-width: 425px) {
+  /* Hide the aside/sidebar */
+  aside {
+    display: none;
+  }
+
+  /* Main layout: stack everything vertically */
+  .divide {
+    flex-direction: column;
+  }
+
+  main,
+  .about,
+  .education,
+  .certificate,
+  .contact,
+  footer {
+    margin-left: 0;
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  /* Make all grid and flex layouts single-column */
+  .about_header,
+  .edu-cert-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+  }
+
+  .edu,
+  .lists,
+  .adds,
+  .conts {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .first_part,
+  .second_part {
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: none;
+    padding: 10px;
+  }
+
+  /* Minimize text and images for mobile */
+  .name {
+    position: static;
+    font-size: 36px;
+    text-shadow: none;
+    margin-top: 600px;
+    margin-left: 140px;
+  }
+  .image > p {
+    position: static;
+    font-size: 24px;
+    text-shadow: none;
+    margin-left: 140px;
+  }
+  .about_header img {
+    width: 100%;
+    height: auto;
+  }
+  .subject > h2 {
+    font-size: 28px;
+    margin-left: 0;
+    text-align: center;
+  }
+  .subject > p {
+    font-size: 16px;
+    margin-left: 0;
+    text-align: center;
+  }
+  .lines {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  .sub {
+    font-size: 18px !important;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .lines > .dot {
+    margin-left: 0;
+    width: 25px;
+    height: 25px;
+  }
+   .first_part,
+  .second_part {
+    width: 100% !important;
+    margin: 0 auto;
+    box-shadow: none;
+    padding: 10px;
+  }
+
+  form {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .inp,
+  .inp1,
+  .inp2 {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .dot {
+    margin-left: 0;
+    width: 25px !important;
+    height: 25px !important;
+    max-width: 100%;
+    max-height: 25px;
+    object-fit: contain;
+    display: block;
+  }
+  .main-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+  .about,
+  .education,
+  .certificate {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 10px 0;
+    box-sizing: border-box;
+    position: static !important;
+    overflow: visible !important;
+    z-index: auto !important;
+   
+  }
+  .about *, .education *, .certificate * {
+    float: none !important;
+    position: static !important;
+  }
+ footer {
+        display: none;
+    }
+.foots{
+    margin-top: 1000px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.about > h2{
+    color: rgb(98, 131, 131);
+    margin-left: 10px;
+}
+.line{
+    border-bottom: 2px solid rgb(80, 174, 218);
+    width: 150px;
+    height: 5px;       
+    margin-top: -50px; 
+    margin-left: 10px;
+}
+.ab{
+    text-align: justify;
+    margin-left: 10px;
+}
+}
+@media only screen and (min-width:425px) and (max-width:768px) {
+    aside {
+    display: none;
+  }
+
+  /* Main layout: stack everything vertically */
+  .divide {
+    flex-direction: column;
+  }
+
+  main,
+  .about,
+  .education,
+  .certificate,
+  .contact,
+  footer {
+    margin-left: 0;
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  /* Make all grid and flex layouts single-column */
+  .about_header,
+  .edu-cert-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+  }
+
+  .edu,
+  .lists,
+  .adds,
+  .conts {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .first_part,
+  .second_part {
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: none;
+    padding: 10px;
+  }
+
+  /* Minimize text and images for mobile */
+  .name {
+    position: static;
+    font-size: 36px;
+    text-shadow: none;
+    margin-top: 600px;
+    margin-left: 140px;
+  }
+  .image > p {
+    position: static;
+    font-size: 24px;
+    text-shadow: none;
+    margin-left: 140px;
+  }
+  .about_header img {
+    width: 100%;
+    height: auto;
+  }
+  .subject > h2 {
+    font-size: 28px;
+    margin-left: 0;
+    text-align: center;
+  }
+  .subject > p {
+    font-size: 16px;
+    margin-left: 0;
+    text-align: center;
+  }
+  .lines {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  .sub {
+    font-size: 18px !important;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .lines > .dot {
+    margin-left: 0;
+    width: 25px;
+    height: 25px;
+  }
+   .first_part,
+  .second_part {
+    width: 100% !important;
+    margin: 0 auto;
+    box-shadow: none;
+    padding: 10px;
+  }
+
+  form {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .inp,
+  .inp1,
+  .inp2 {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .dot {
+    margin-left: 0;
+    width: 25px !important;
+    height: 25px !important;
+    max-width: 100%;
+    max-height: 25px;
+    object-fit: contain;
+    display: block;
+  }
+  .main-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+  .about,
+  .education,
+  .certificate {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 10px 0;
+    box-sizing: border-box;
+    position: static !important;
+    overflow: visible !important;
+    z-index: auto !important;
+   
+  }
+  .about *, .education *, .certificate * {
+    float: none !important;
+    position: static !important;
+  }
+ footer {
+        display: none;
+    }
+.foots{
+    margin-top: 1000px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.about > h2{
+    color: rgb(98, 131, 131);
+    margin-left: 10px;
+}
+.line{
+    border-bottom: 2px solid rgb(80, 174, 218);
+    width: 150px;
+    height: 5px;       
+    margin-top: -50px; 
+    margin-left: 10px;
+}
+.ab{
+    text-align: justify;
+    margin-left: 10px;
+}
+}
+@media only screen and (min-width:768px) and (max-width:1024px) {
+    aside {
+    display: none;
+  }
+
+  /* Main layout: stack everything vertically */
+  .divide {
+    flex-direction: column;
+  }
+
+  main,
+  .about,
+  .education,
+  .certificate,
+  .contact,
+  footer {
+    margin-left: 0;
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  /* Make all grid and flex layouts single-column */
+  .about_header,
+  .edu-cert-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+  }
+
+  .edu,
+  .lists,
+  .adds,
+  .conts {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .first_part,
+  .second_part {
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: none;
+    padding: 10px;
+  }
+
+  /* Minimize text and images for mobile */
+  .name {
+    position: static;
+    font-size: 36px;
+    text-shadow: none;
+    margin-top: 600px;
+    margin-left: 140px;
+  }
+  .image > p {
+    position: static;
+    font-size: 24px;
+    text-shadow: none;
+    margin-left: 140px;
+  }
+  .about_header img {
+    width: 100%;
+    height: auto;
+  }
+  .subject > h2 {
+    font-size: 28px;
+    margin-left: 0;
+    text-align: center;
+  }
+  .subject > p {
+    font-size: 16px;
+    margin-left: 0;
+    text-align: center;
+  }
+  .lines {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  .sub {
+    font-size: 18px !important;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .lines > .dot {
+    margin-left: 0;
+    width: 25px;
+    height: 25px;
+  }
+   .first_part,
+  .second_part {
+    width: 100% !important;
+    margin: 0 auto;
+    box-shadow: none;
+    padding: 10px;
+  }
+
+  form {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .inp,
+  .inp1,
+  .inp2 {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .dot {
+    margin-left: 0;
+    width: 25px !important;
+    height: 25px !important;
+    max-width: 100%;
+    max-height: 25px;
+    object-fit: contain;
+    display: block;
+  }
+  .main-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+  .about,
+  .education,
+  .certificate {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 10px 0;
+    box-sizing: border-box;
+    position: static !important;
+    overflow: visible !important;
+    z-index: auto !important;
+   
+  }
+  .about *, .education *, .certificate * {
+    float: none !important;
+    position: static !important;
+  }
+ footer {
+        display: none;
+    }
+.foots{
+    margin-top: 1000px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.about > h2{
+    color: rgb(98, 131, 131);
+    margin-left: 10px;
+}
+.line{
+    border-bottom: 2px solid rgb(80, 174, 218);
+    width: 150px;
+    height: 5px;       
+    margin-top: -50px; 
+    margin-left: 10px;
+}
+.ab{
+    text-align: justify;
+    margin-left: 10px;
+}
+}
+@media only screen and (min-width: 1024px) and (max-width: 1440px) {
+  /* Sidebar adjustments */
+  aside {
+    width: 300px;
+  }
+
+  main {
+    margin-left: 300px;
+  }
+
+  .about,
+  .education,
+  .certificate,
+  .contact {
+    margin-left: 310px;
+    padding: 20px;
+    width: calc(100% - 310px);
+    box-sizing: border-box;
+  }
+
+  /* Hero section text */
+  .name {
+    font-size: 60px;
+    left: 350px;
+  }
+
+  .image > p {
+    font-size: 40px;
+    left: 350px;
+  }
+
+  /* About section adjustments */
+  .about > h2,
+  .edu_head > h2,
+  .certi > h2,
+  .cons > h1 {
+    font-size: 40px;
+  }
+
+  .line,
+  .edu_head > hr,
+  .certi > hr,
+  .horiz {
+    width: 150px;
+  }
+
+  .subject > h2 {
+    font-size: 32px;
+  }
+
+  .subject > p,
+  .ab {
+    font-size: 18px;
+  }
+
+  .sub {
+    font-size: 20px;
+  }
+
+  .about_header > img {
+    width: 350px;
+    height: auto;
+  }
+
+  /* Education and certificate layout */
+  .edu,
+  .lists {
+    gap: 30px;
+  }
+
+  /* Contact form and map */
+  .adds {
+    gap: 30px;
+  }
+
+  .first_part {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .second_part {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  .inp {
+    width: 80%;
+  }
+
+  .inp1 {
+    width: 90%;
+  }
+
+  .inp2 {
+    width: 89%;
+  }
+
+  .foots {
+    width: 100%;
+    height: 100px;
+    background-color: aqua;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 310px; /* to match sidebar width */
+    margin-top: auto;   /* Pushes it to bottom if space allows */
+  }
+
+  /* Ensure footer is visible */
+  footer {
+    display: flex; /* Show footer */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100px; /* Adjust height as needed */
+    background-color: #61c4e7; /* Match footer background */
+    color: rgb(4, 4, 4);
+    text-align: center;
+    padding: 20px 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+  }
+}
