@@ -229,10 +229,13 @@ export default function About() {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: 100, rotate: 20 }}
+                whileInView={{ opacity: 1, x: 0, rotate: 0, y: [0, 15, 0] }}
                 viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
+                transition={{
+                  default: { duration: 1, delay: 0.5, type: "spring", bounce: 0.5 },
+                  y: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }
+                }}
                 className="absolute -top-4 -right-2 sm:-right-4 z-20 rounded-pill border border-hair bg-surface px-3 py-1.5 sm:px-4 sm:py-2 shadow-lg"
               >
                 <span className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
@@ -241,10 +244,13 @@ export default function About() {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: -100, rotate: -20 }}
+                whileInView={{ opacity: 1, x: 0, rotate: 0, y: [0, -15, 0] }}
                 viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.6, delay: 0.62, ease: EASE }}
+                transition={{
+                  default: { duration: 1, delay: 0.62, type: "spring", bounce: 0.5 },
+                  y: { duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.62 }
+                }}
                 className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 z-20 rounded-pill border border-hair bg-surface px-3 py-1.5 sm:px-4 sm:py-2 shadow-lg"
               >
                 <span className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">

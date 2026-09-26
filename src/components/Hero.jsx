@@ -435,11 +435,13 @@ export default function Hero() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: D + 1.15, ease: EASE }}
-              style={reduce ? undefined : { transform: "translateZ(78px)" }}
-              className="absolute -left-5 bottom-10 rounded-pill border border-hair bg-surface px-5 py-2.5 shadow-xl"
+              initial={{ opacity: 0, x: -100, rotate: -20, z: reduce ? 0 : 78 }}
+              animate={{ opacity: 1, x: 0, rotate: 0, y: [0, -15, 0], z: reduce ? 0 : 78 }}
+              transition={{
+                default: { duration: 1, delay: D + 1.15, type: "spring", bounce: 0.5 },
+                y: { duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: D + 1.15 }
+              }}
+              className="absolute -left-5 bottom-10 z-20 rounded-pill border border-hair bg-surface px-5 py-2.5 shadow-xl"
             >
               <span className="font-display text-xs font-semibold uppercase tracking-[0.16em] text-white">
                 MCA Graduate
@@ -447,11 +449,13 @@ export default function Hero() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: D + 1.3, ease: EASE }}
-              style={reduce ? undefined : { transform: "translateZ(96px)" }}
-              className="absolute -right-3 top-10 rounded-pill border border-hair bg-surface px-5 py-2.5 shadow-xl"
+              initial={{ opacity: 0, x: 100, rotate: 20, z: reduce ? 0 : 96 }}
+              animate={{ opacity: 1, x: 0, rotate: 0, y: [0, 15, 0], z: reduce ? 0 : 96 }}
+              transition={{
+                default: { duration: 1, delay: D + 1.3, type: "spring", bounce: 0.5 },
+                y: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: D + 1.3 }
+              }}
+              className="absolute -right-3 top-10 z-20 rounded-pill border border-hair bg-surface px-5 py-2.5 shadow-xl"
             >
               <span className="font-display text-xs font-semibold uppercase tracking-[0.16em] text-accent">
                 Python Dev
