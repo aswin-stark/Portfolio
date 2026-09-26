@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   motion,
   useInView,
@@ -6,14 +6,14 @@ import {
   useSpring,
   useTransform,
   useReducedMotion,
+  AnimatePresence,
 } from "framer-motion";
 import { SiPython, SiJavascript, SiReact, SiMysql, SiGit, SiHtml5 } from "react-icons/si";
 import useCountUp from "./useCountUp";
 
 const EASE = [0.16, 1, 0.3, 1];
 
-/* Self-assessed proficiency — adjust these to match your own confidence level */
-const skills = [
+const initialSkills = [
   { name: "Python", icon: <SiPython />, level: 90 },
   { name: "HTML / CSS", icon: <SiHtml5 />, level: 85 },
   { name: "MySQL", icon: <SiMysql />, level: 82 },
@@ -32,7 +32,6 @@ function SkillCard({ name, icon, level, index }) {
   const reduce = useReducedMotion();
   const count = useCountUp(level, inView, 1400);
 
-  /* Pointer position across the card, 0..1 per axis */
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
 
@@ -40,7 +39,6 @@ function SkillCard({ name, icon, level, index }) {
   const rotateY = useSpring(useTransform(px, [0, 1], [-16, 16]), SPRING);
   const glareX = useTransform(px, (v) => `${v * 100}%`);
   const glareY = useTransform(py, (v) => `${v * 100}%`);
-  /* Drop shadow leans the opposite way to the tilt, so the card reads as lifted */
   const shadowX = useTransform(px, [0, 1], [26, -26]);
   const shadowY = useTransform(py, [0, 1], [26, -26]);
   const boxShadow = useTransform(
@@ -63,7 +61,7 @@ function SkillCard({ name, icon, level, index }) {
   const depth = (z) => (reduce ? undefined : { transform: `translateZ(${z}px)` });
 
   return (
-    <div ref={ref} className="[perspective:1300px]">
+    <motion.div layout layoutId={name} ref={ref} className="[perspective:1300px]" transition={{ type: "spring", stiffness: 60, damping: 14, mass: 1.2 }}>
       <motion.div
         initial={{ opacity: 0, y: 46, rotateX: reduce ? 0 : -38 }}
         animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
@@ -86,7 +84,6 @@ function SkillCard({ name, icon, level, index }) {
           }
           className="group relative isolate overflow-hidden rounded-card border border-hair bg-gradient-to-b from-surface-2 to-surface px-5 py-9 text-center transition-colors duration-300 hover:border-accent/70"
         >
-          {/* deepest plane: ghosted index, parallaxes against the face */}
           <span
             aria-hidden
             style={depth(-42)}
@@ -95,7 +92,6 @@ function SkillCard({ name, icon, level, index }) {
             {String(index + 1).padStart(2, "0")}
           </span>
 
-          {/* specular highlight tracking the pointer */}
           {!reduce && (
             <motion.span
               aria-hidden
@@ -109,22 +105,18 @@ function SkillCard({ name, icon, level, index }) {
             />
           )}
 
-          {/* sheen sweeping across on hover */}
           <span
             aria-hidden
             className="pointer-events-none absolute inset-y-0 -left-1/3 z-10 w-1/3 -translate-x-full skew-x-12 bg-gradient-to-r from-transparent via-white/12 to-transparent transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[420%]"
           />
 
-          {/* accent wash rising from the base */}
           <span
             aria-hidden
             className="pointer-events-none absolute inset-0 origin-bottom scale-y-0 bg-gradient-to-t from-accent/18 to-transparent transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
           />
 
-          {/* gauge + icon, lifted well off the card face */}
           <div className="relative mx-auto mb-5 h-[104px] w-[104px]" style={depth(60)}>
             <svg viewBox="0 0 96 96" className="h-full w-full -rotate-90">
-              {/* tick ring */}
               <circle
                 cx="48" cy="48" r="42" fill="none"
                 stroke="var(--color-hair)" strokeWidth="2"
@@ -149,7 +141,6 @@ function SkillCard({ name, icon, level, index }) {
               />
             </svg>
 
-            {/* raised disc holding the icon */}
             <span
               style={depth(22)}
               className="absolute inset-0 m-auto flex h-14 w-14 items-center justify-center rounded-full border border-hair bg-ink text-2xl text-accent shadow-lg transition-transform duration-300 group-hover:scale-110"
@@ -162,16 +153,30 @@ function SkillCard({ name, icon, level, index }) {
             <p className="font-display text-base font-semibold uppercase tracking-[0.1em] text-white">
               {name}
             </p>
-            
           </div>
         </motion.article>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
 export default function SkillsBlock() {
   const reduce = useReducedMotion();
+  const [skills, setSkills] = useState(initialSkills);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSkills((prev) => {
+        const copy = [...prev];
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      });
+    }, 4500); 
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div id="skills" className="relative mt-28 scroll-mt-28 sm:mt-32">
@@ -219,13 +224,13 @@ export default function SkillsBlock() {
         </motion.p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5">
-        {skills.map((s, i) => (
-          <SkillCard key={s.name} {...s} index={i} />
-        ))}
-      </div>
+      <motion.div layout className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5">
+        <AnimatePresence>
+          {skills.map((s, i) => (
+            <SkillCard key={s.name} {...s} index={i} />
+          ))}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 }
-
-
