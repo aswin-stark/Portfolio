@@ -1,17 +1,10 @@
-import { useRef, useState, useEffect } from "react";
-import {
-  motion,
-  useInView,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useReducedMotion,
-  AnimatePresence,
-} from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { SiPython, SiJavascript, SiReact, SiMysql, SiGit, SiHtml5 } from "react-icons/si";
 import useCountUp from "./useCountUp";
 
 const EASE = [0.16, 1, 0.3, 1];
+const SPRING = { stiffness: 150, damping: 20, mass: 0.5 };
 
 const initialSkills = [
   { name: "Python", icon: <SiPython />, level: 90 },
@@ -24,7 +17,6 @@ const initialSkills = [
 
 const R = 34;
 const CIRC = 2 * Math.PI * R;
-const SPRING = { stiffness: 170, damping: 16, mass: 0.5 };
 
 function SkillCard({ name, icon, level, index }) {
   const ref = useRef(null);
@@ -32,13 +24,13 @@ function SkillCard({ name, icon, level, index }) {
   const reduce = useReducedMotion();
   const count = useCountUp(level, inView, 1400);
 
+  // 3D Tilt Logic
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
 
   const rotateX = useSpring(useTransform(py, [0, 1], [14, -14]), SPRING);
   const rotateY = useSpring(useTransform(px, [0, 1], [-16, 16]), SPRING);
-  const glareX = useTransform(px, (v) => `${v * 100}%`);
-  const glareY = useTransform(py, (v) => `${v * 100}%`);
+  
   const shadowX = useTransform(px, [0, 1], [26, -26]);
   const shadowY = useTransform(py, [0, 1], [26, -26]);
   const boxShadow = useTransform(
@@ -61,122 +53,88 @@ function SkillCard({ name, icon, level, index }) {
   const depth = (z) => (reduce ? undefined : { transform: `translateZ(${z}px)` });
 
   return (
-    <motion.div layout layoutId={name} ref={ref} className="[perspective:1300px]" transition={{ type: "spring", stiffness: 60, damping: 14, mass: 1.2 }}>
-      <motion.div
-        initial={{ opacity: 0, y: 46, rotateX: reduce ? 0 : -38 }}
-        animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-        transition={{
-          duration: reduce ? 0.25 : 0.9,
-          delay: reduce ? 0 : (index % 3) * 0.09 + Math.floor(index / 3) * 0.08,
-          ease: EASE,
-        }}
-        className="[transform-style:preserve-3d]"
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30, rotateX: reduce ? 0 : -20 }}
+      animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+      transition={{
+        duration: reduce ? 0.25 : 0.8,
+        delay: reduce ? 0 : (index % 3) * 0.1,
+        ease: EASE,
+      }}
+      className="[perspective:1300px]"
+    >
+      <motion.article
+        onMouseMove={onMove}
+        onMouseLeave={reset}
+        style={reduce ? undefined : { rotateX, rotateY, boxShadow, transformStyle: "preserve-3d" }}
+        className="group relative isolate overflow-hidden rounded-card border border-hair bg-gradient-to-b from-surface-2 to-surface px-5 py-9 text-center transition-colors duration-300 hover:border-accent/70"
       >
-        <motion.article
-          onMouseMove={onMove}
-          onMouseLeave={reset}
-          whileHover={reduce ? undefined : { z: 46 }}
-          transition={{ type: "spring", ...SPRING }}
-          style={
-            reduce
-              ? undefined
-              : { rotateX, rotateY, boxShadow, transformStyle: "preserve-3d" }
-          }
-          className="group relative isolate overflow-hidden rounded-card border border-hair bg-gradient-to-b from-surface-2 to-surface px-5 py-9 text-center transition-colors duration-300 hover:border-accent/70"
+        
+        {/* ghost index in the background */}
+        <span
+          aria-hidden
+          style={depth(-42)}
+          className="ghost-index pointer-events-none absolute inset-x-0 top-3 text-[5.5rem] group-hover:opacity-[0.14]"
         >
-          <span
-            aria-hidden
-            style={depth(-42)}
-            className="ghost-index pointer-events-none absolute inset-x-0 top-3 text-[5.5rem] group-hover:opacity-[0.14]"
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
+          {String(index + 1).padStart(2, "0")}
+        </span>
 
-          {!reduce && (
-            <motion.span
-              aria-hidden
-              style={{
-                background:
-                  "radial-gradient(circle at var(--gx) var(--gy), rgba(255,255,255,0.20), transparent 55%)",
-                "--gx": glareX,
-                "--gy": glareY,
-              }}
-              className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        {/* sheen sweeping across on hover */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 -left-1/3 z-10 w-1/3 -translate-x-full skew-x-12 bg-gradient-to-r from-transparent via-white/5 to-transparent transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[420%]"
+        />
+
+        {/* accent wash rising from the base */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 origin-bottom scale-y-0 bg-gradient-to-t from-accent/10 to-transparent transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
+        />
+
+        <div className="relative mx-auto mb-5 h-[104px] w-[104px] z-20" style={depth(60)}>
+          <svg viewBox="0 0 96 96" className="h-full w-full -rotate-90">
+            <circle
+              cx="48" cy="48" r="42" fill="none"
+              stroke="var(--color-hair)" strokeWidth="2"
+              strokeDasharray="1 5" strokeLinecap="round"
             />
-          )}
+            <circle
+              cx="48" cy="48" r={R} fill="none"
+              stroke="var(--color-surface-2)" strokeWidth="5"
+            />
+            <motion.circle
+              cx="48" cy="48" r={R} fill="none"
+              stroke="var(--color-accent)" strokeWidth="5" strokeLinecap="round"
+              strokeDasharray={CIRC}
+              initial={{ strokeDashoffset: CIRC }}
+              animate={inView ? { strokeDashoffset: 0 } : {}}
+              transition={{
+                duration: reduce ? 0.3 : 1.2,
+                delay: reduce ? 0 : 0.2 + (index % 3) * 0.1,
+                ease: EASE,
+              }}
+              style={{ filter: "drop-shadow(0 0 6px rgba(255,45,77,0.35))" }}
+            />
+          </svg>
 
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 -left-1/3 z-10 w-1/3 -translate-x-full skew-x-12 bg-gradient-to-r from-transparent via-white/12 to-transparent transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[420%]"
-          />
+          <span style={depth(22)} className="absolute inset-0 m-auto flex h-14 w-14 items-center justify-center rounded-full border border-hair bg-ink text-2xl text-accent shadow-md transition-transform duration-300 group-hover:scale-110">
+            {icon}
+          </span>
+        </div>
 
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 origin-bottom scale-y-0 bg-gradient-to-t from-accent/18 to-transparent transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
-          />
-
-          <div className="relative mx-auto mb-5 h-[104px] w-[104px]" style={depth(60)}>
-            <svg viewBox="0 0 96 96" className="h-full w-full -rotate-90">
-              <circle
-                cx="48" cy="48" r="42" fill="none"
-                stroke="var(--color-hair)" strokeWidth="2"
-                strokeDasharray="1 5" strokeLinecap="round"
-              />
-              <circle
-                cx="48" cy="48" r={R} fill="none"
-                stroke="var(--color-surface-2)" strokeWidth="5"
-              />
-              <motion.circle
-                cx="48" cy="48" r={R} fill="none"
-                stroke="var(--color-accent)" strokeWidth="5" strokeLinecap="round"
-                strokeDasharray={CIRC}
-                initial={{ strokeDashoffset: CIRC }}
-                animate={inView ? { strokeDashoffset: 0 } : {}}
-                transition={{
-                  duration: reduce ? 0.3 : 1.5,
-                  delay: reduce ? 0 : 0.3 + (index % 3) * 0.09,
-                  ease: EASE,
-                }}
-                style={{ filter: "drop-shadow(0 0 6px rgba(255,45,77,0.55))" }}
-              />
-            </svg>
-
-            <span
-              style={depth(22)}
-              className="absolute inset-0 m-auto flex h-14 w-14 items-center justify-center rounded-full border border-hair bg-ink text-2xl text-accent shadow-lg transition-transform duration-300 group-hover:scale-110"
-            >
-              {icon}
-            </span>
-          </div>
-
-          <div style={depth(34)} className="relative">
-            <p className="font-display text-base font-semibold uppercase tracking-[0.1em] text-white">
-              {name}
-            </p>
-          </div>
-        </motion.article>
-      </motion.div>
+        <div className="relative z-20" style={depth(34)}>
+          <p className="font-display text-base font-semibold uppercase tracking-[0.1em] text-white">
+            {name}
+          </p>
+        </div>
+      </motion.article>
     </motion.div>
   );
 }
 
 export default function SkillsBlock() {
   const reduce = useReducedMotion();
-  const [skills, setSkills] = useState(initialSkills);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSkills((prev) => {
-        const copy = [...prev];
-        for (let i = copy.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [copy[i], copy[j]] = [copy[j], copy[i]];
-        }
-        return copy;
-      });
-    }, 4500); 
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div id="skills" className="relative mt-28 scroll-mt-28 sm:mt-32">
@@ -224,13 +182,11 @@ export default function SkillsBlock() {
         </motion.p>
       </div>
 
-      <motion.div layout className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5">
-        <AnimatePresence>
-          {skills.map((s, i) => (
-            <SkillCard key={s.name} {...s} index={i} />
-          ))}
-        </AnimatePresence>
-      </motion.div>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5">
+        {initialSkills.map((s, i) => (
+          <SkillCard key={s.name} {...s} index={i} />
+        ))}
+      </div>
     </div>
   );
 }

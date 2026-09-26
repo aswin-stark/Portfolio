@@ -46,7 +46,11 @@ function Timeline({ items }) {
     target: ref,
     offset: ["start 85%", "end 60%"],
   });
-  const scaleY = useSpring(scrollYProgress, { stiffness: 90, damping: 24, restDelta: 0.001 });
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 24,
+    restDelta: 0.001,
+  });
 
   return (
     <div ref={ref} className="relative pl-9">
@@ -59,12 +63,21 @@ function Timeline({ items }) {
       />
 
       {items.map((item, i) => (
-        <Reveal key={item.title} delay={i * 0.12} className="relative mb-10 last:mb-0">
+        <Reveal
+          key={item.title}
+          delay={i * 0.12}
+          className="relative mb-10 last:mb-0"
+        >
           <motion.span
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true, amount: 0.6 }}
-            transition={{ type: "spring", stiffness: 300, damping: 16, delay: 0.15 }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 16,
+              delay: 0.15,
+            }}
             className="absolute -left-[3.15rem] top-0 flex h-9 w-9 items-center justify-center rounded-full border border-accent/40 bg-ink text-accent"
           >
             {item.icon}
@@ -91,12 +104,19 @@ function Timeline({ items }) {
 export default function Resume() {
   return (
     <section id="resume" className="section-shell overflow-hidden">
-      <span className="watermark absolute right-6 top-12 text-[16vw]" aria-hidden>
+      <span
+        className="watermark absolute right-6 top-12 text-[16vw]"
+        aria-hidden
+      >
         Resume
       </span>
 
       <div className="shell relative">
-        <SectionHeading eyebrow="My Journey" title="Resume &" highlight="Background" />
+        <SectionHeading
+          eyebrow="My Journey"
+          title="Education &"
+          highlight="Internship"
+        />
 
         <div className="grid gap-14 md:grid-cols-2">
           <div>
